@@ -1,0 +1,61 @@
+{
+  "title": "الاشتراكات",
+  "plansTitle": "الباقات والأسعار",
+  "paymentHistoryTitle": "سجل المدفوعات",
+  "userSubscriptionsTitle": "اشتراكات المستخدمين",
+  "editPlan": "تعديل الباقة",
+  "addPlan": "إضافة باقة",
+  "plansSubtitle": "خطط ورش العمل - عجلتان ، 4 عجلات وكلاهما. خطط شهرية وسنوية متاحة. تحرير لتحديث الخطط.",
+  "noPlansFor": "لا توجد باقات لـ",
+  "addPlanNotice": "أضف باقة لنوع السيارة هذا من الزر أعلاه.",
+  "filterAll": "جميع السيارات",
+  "vehicleTypes": {
+    "2 Wheelers": "عجلتان",
+    "4 Wheelers": "4 عجلات",
+    "Both": "كلاهما",
+    "4 Wheeler + Heavy Vehicle": "4 عجلات + مركبة ثقيلة"
+  },
+  "monthly": "شهريًا",
+  "yearly": "سنويًا",
+  "savePercent": "توفير",
+  "subscribers": "مشتركين",
+  "summaryCollected": "إجمالي المحصل هذا الشهر",
+  "summaryFailed": "المدفوعات الفاشلة",
+  "summaryRefunds": "المبالغ المستردة",
+  "summaryNet": "صافي الإيراد",
+  "filters": { "dateRange": "نطاق التاريخ", "plan": "الباقة", "status": "الحالة" },
+  "table": {
+    "invoice": "رقم الفاتورة",
+    "tenant": "المستأجر",
+    "plan": "الباقة",
+    "amount": "المبلغ",
+    "date": "التاريخ",
+    "method": "طريقة الدفع",
+    "status": "الحالة",
+    "actions": "إجراءات"
+  },
+  "userSubscriptions": {
+    "table": {
+      "user": "المستخدم",
+      "subscription": "الاشتراك",
+      "purchaseDate": "تاريخ الشراء",
+      "expiryDate": "تاريخ الانتهاء",
+      "status": "الحالة"
+    },
+    "stats": {
+      "active": "نشط",
+      "expired": "منتهي",
+      "cancelled": "ملغى",
+      "total": "الإجمالي"
+    },
+    "searchPlaceholder": "البحث بالاسم أو البريد أو الباقة...",
+    "filters": { "plan": "الباقة", "status": "الحالة" },
+    "empty": "لا توجد اشتراكات مستخدمين."
+  },
+  "statusPaid": "مدفوع",
+  "statusFailed": "فشل",
+  "statusRefunded": "مسترد",
+  "viewInvoice": "عرض الفاتورة",
+  "refund": "استرداد",
+  "refundConfirm": "استرداد هذا الدفع؟"
+}

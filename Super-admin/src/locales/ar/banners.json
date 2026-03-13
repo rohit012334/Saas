@@ -1,0 +1,37 @@
+{
+  "title": "إدارة البنرات",
+  "addBanner": "إضافة بنر",
+  "filters": {
+    "all": "جميع البنرات",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "week": "آخر 7 أيام"
+  },
+  "table": {
+    "image": "الصورة",
+    "type": "النوع",
+    "title": "العنوان",
+    "created": "تاريخ الإنشاء",
+    "actions": "الإجراءات"
+  },
+  "modal": {
+    "edit": "تعديل البنر",
+    "add": "إضافة بنر جديد",
+    "type": "نوع البنر",
+    "title": "العنوان",
+    "description": "الوصف",
+    "image": "صورة البنر",
+    "clickToUpload": "انقر لتحميل الصورة",
+    "clickToChange": "انقر للتغيير",
+    "cancel": "إلغاء",
+    "save": "حفظ البنر"
+  },
+  "successCreate": "تم إنشاء البنر بنجاح.",
+  "successUpdate": "تم تحديث البنر بنجاح.",
+  "successDelete": "تم حذف البنر بنجاح.",
+  "types": {
+    "Hero": "هيرو",
+    "Offer": "عرض",
+    "Trending Bottom": "رائج بالأسفل"
+  }
+}

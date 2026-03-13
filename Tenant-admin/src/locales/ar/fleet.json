@@ -1,0 +1,8 @@
+{
+  "totalVehicles": "إجمالي المركبات",
+  "dueService": "موعد الخدمة مستحق",
+  "overdueService": "موعد الخدمة متأخر",
+  "activeJobs": "الوظائف النشطة",
+  "addFleetVehicle": "إضافة مركبة أسطول",
+  "maintenanceSchedule": "جدول الصيانة"
+}

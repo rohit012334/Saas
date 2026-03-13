@@ -1,0 +1,8 @@
+{
+  "totalVehicles": "Total Vehicles",
+  "dueService": "Due for Service",
+  "overdueService": "Overdue Service",
+  "activeJobs": "Active Jobs",
+  "addFleetVehicle": "Add Fleet Vehicle",
+  "maintenanceSchedule": "Maintenance Schedule"
+}

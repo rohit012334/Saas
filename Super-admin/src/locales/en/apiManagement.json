@@ -1,0 +1,24 @@
+{
+  "title": "API Management",
+  "statsCallsToday": "API Calls Today",
+  "statsCallsMonth": "API Calls This Month",
+  "statsErrorRate": "Error Rate",
+  "statsAvgResponse": "Avg Response Time",
+  "keysTitle": "API Keys",
+  "usageTitle": "API Usage (Last 30 Days)",
+  "table": {
+    "serviceName": "Service",
+    "category": "Category",
+    "key": "Key",
+    "status": "Status",
+    "lastUsed": "Last Used",
+    "actions": "Actions"
+  },
+  "viewKey": "View Key",
+  "updateKey": "Update Key",
+  "rotateKey": "Rotate Key",
+  "toggleActive": "Active",
+  "toggleInactive": "Inactive",
+  "keyModalTitle": "API Key",
+  "updateKeyModalTitle": "Update API Key"
+}

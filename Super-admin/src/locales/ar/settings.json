@@ -1,0 +1,48 @@
+{
+  "title": "إعدادات المنصة",
+  "tabs": {
+    "general": "عام",
+    "tenantDefaults": "إعدادات المستأجرين",
+    "emailTemplates": "قوالب البريد",
+    "backupMaintenance": "النسخ الاحتياطي والصيانة"
+  },
+  "general": {
+    "platformName": "اسم المنصة",
+    "platformLogo": "شعار المنصة",
+    "supportEmail": "بريد الدعم",
+    "supportPhone": "هاتف الدعم",
+    "defaultCurrency": "العملة الافتراضية",
+    "defaultLanguage": "اللغة الافتراضية",
+    "timezone": "المنطقة الزمنية",
+    "dateFormat": "تنسيق التاريخ",
+    "save": "حفظ"
+  },
+  "tenantDefaults": {
+    "defaultTrial": "فترة التجربة الافتراضية (أيام)",
+    "autoApprove": "الموافقة التلقائية على التسجيلات",
+    "maxStaffPerPlan": "الحد الأقصى للموظفين لكل باقة",
+    "maxVehiclesPerPlan": "الحد الأقصى للمركبات لكل باقة",
+    "featureFlags": "ميزات مفعلة لكل باقة",
+    "save": "حفظ"
+  },
+  "emailTemplates": {
+    "selectTemplate": "اختر القالب",
+    "welcome": "بريد الترحيب",
+    "invoice": "بريد الفاتورة",
+    "paymentFailed": "فشل الدفع",
+    "suspension": "إشعار الإيقاف",
+    "passwordReset": "إعادة تعيين كلمة المرور",
+    "subject": "الموضوع",
+    "body": "النص",
+    "preview": "معاينة",
+    "saveTemplate": "حفظ القالب"
+  },
+  "backup": {
+    "lastBackup": "آخر نسخة احتياطية",
+    "backupFrequency": "دورية النسخ",
+    "manualBackup": "نسخ احتياطي يدوي",
+    "maintenanceMode": "وضع الصيانة",
+    "maintenanceWarning": "جميع المستأجرين سيفقدون الوصول.",
+    "systemVersion": "إصدار النظام"
+  }
+}

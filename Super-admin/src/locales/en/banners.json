@@ -1,0 +1,37 @@
+{
+  "title": "Banner Management",
+  "addBanner": "Add Banner",
+  "filters": {
+    "all": "All Banners",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "week": "Last 7 Days"
+  },
+  "table": {
+    "image": "Image",
+    "type": "Type",
+    "title": "Title",
+    "created": "Created",
+    "actions": "Actions"
+  },
+  "modal": {
+    "edit": "Edit Banner",
+    "add": "Add New Banner",
+    "type": "Banner Type",
+    "title": "Title",
+    "description": "Description",
+    "image": "Banner Image",
+    "clickToUpload": "Click to upload image",
+    "clickToChange": "Click to Change",
+    "cancel": "Cancel",
+    "save": "Save Banner"
+  },
+  "successCreate": "Banner created successfully.",
+  "successUpdate": "Banner updated successfully.",
+  "successDelete": "Banner deleted successfully.",
+  "types": {
+    "Hero": "Hero",
+    "Offer": "Offer",
+    "Trending Bottom": "Trending Bottom"
+  }
+}

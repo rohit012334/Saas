@@ -1,0 +1,36 @@
+{
+  "title": "الأمان وسجلات التدقيق",
+  "overviewTitle": "نظرة عامة على الأمان",
+  "failedLogins": "محاولات الدخول الفاشلة (24 ساعة)",
+  "activeSessions": "الجلسات النشطة",
+  "suspiciousIps": "عناوين IP مشبوهة",
+  "twoFaEnabled": "إداريون مفعّلون للمصادقة الثنائية",
+  "dismissAlert": "إخفاء",
+  "auditLogsTitle": "سجلات التدقيق",
+  "filters": {
+    "dateRange": "نطاق التاريخ",
+    "actionType": "نوع العملية",
+    "user": "المستخدم",
+    "tenant": "المستأجر"
+  },
+  "table": {
+    "timestamp": "الوقت",
+    "adminUser": "المسؤول",
+    "action": "العملية",
+    "target": "الهدف",
+    "ipAddress": "عنوان IP",
+    "location": "الموقع",
+    "status": "الحالة"
+  },
+  "exportCsv": "تصدير CSV",
+  "actions": {
+    "TENANT_SUSPENDED": "تم إيقاف المستأجر",
+    "PLAN_UPDATED": "تم تحديث الباقة",
+    "API_KEY_ROTATED": "تم تدوير مفتاح API",
+    "ADMIN_LOGIN": "تسجيل دخول إداري",
+    "ADMIN_CREATED": "تم إنشاء مسؤول",
+    "TENANT_DELETED": "تم حذف المستأجر",
+    "ANNOUNCEMENT_SENT": "تم إرسال إعلان",
+    "SETTINGS_CHANGED": "تم تغيير الإعدادات"
+  }
+}

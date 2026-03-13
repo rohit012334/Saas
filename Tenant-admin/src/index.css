@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap');
+
+@theme {
+  --font-sans: 'Inter', 'Cairo', ui-sans-serif, system-ui, sans-serif;
+  
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-primary: #3B82F6;
+  --color-destructive: #EF4444;
+  --color-muted: #94A3B8;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-purple: #8B5CF6;
+  --color-border: #1E293B;
+  
+  --radius-xl: 1rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-[#F1F5F9] antialiased;
+    font-family: 'Inter', 'Cairo', sans-serif;
+  }
+  
+  [dir="rtl"] body {
+    font-family: 'Cairo', 'Inter', sans-serif;
+  }
+}
+
+.glass-card {
+  @apply bg-[#1E293B]/50 backdrop-blur-md border border-border rounded-xl;
+}
+
+.surface-card {
+  @apply bg-surface border border-border rounded-xl;
+}
+
+@utility transition-smooth {
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}

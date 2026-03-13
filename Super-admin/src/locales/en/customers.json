@@ -1,0 +1,32 @@
+{
+  "title": "Onboarded Customers",
+  "searchPlaceholder": "Search customers...",
+  "allGarages": "All Garages",
+  "filters": {
+    "all": "All Time",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "week": "Last 7 Days"
+  },
+  "table": {
+    "customer": "Customer",
+    "phone": "Phone",
+    "garage": "Associated Garage",
+    "joined": "Joined",
+    "serviceCount": "Service Count",
+    "actions": "Actions",
+    "viewDetails": "View Details"
+  },
+  "modal": {
+    "contactInfo": "Contact Information",
+    "email": "Email",
+    "phone": "Phone",
+    "associatedGarage": "Associated Garage",
+    "totalServices": "Total Services",
+    "memberSince": "Member since",
+    "registeredVehicles": "Registered Vehicles Detail",
+    "noVehicles": "No vehicles registered",
+    "fullHistory": "View Full History"
+  },
+  "times": "Times"
+}

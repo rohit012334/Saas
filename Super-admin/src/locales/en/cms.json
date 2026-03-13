@@ -1,0 +1,49 @@
+{
+  "faq": {
+    "title": "FAQ Management",
+    "add": "Add FAQ",
+    "search": "Search FAQs...",
+    "english": "English",
+    "arabic": "Arabic",
+    "table": {
+      "question": "Question",
+      "category": "Category",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "modal": {
+      "edit": "Edit FAQ",
+      "add": "Add New FAQ",
+      "en": "English Version",
+      "ar": "Arabic Version",
+      "question": "Question",
+      "answer": "Answer",
+      "category": "Category",
+      "status": "Status",
+      "cancel": "Cancel",
+      "save": "Save FAQ"
+    }
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "save": "Save Changes",
+    "edit": "Edit Content",
+    "enHeader": "English Content",
+    "arHeader": "Arabic Content",
+    "editing": "Editing Mode",
+    "live": "Live View",
+    "placeholder": "Start typing your content...",
+    "languages": "Languages"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "save": "Save Changes",
+    "edit": "Edit Content",
+    "enHeader": "English Content",
+    "arHeader": "Arabic Content",
+    "editing": "Editing Mode",
+    "live": "Live View",
+    "placeholder": "Start typing your policy content...",
+    "languages": "Languages"
+  }
+}

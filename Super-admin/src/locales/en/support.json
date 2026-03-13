@@ -1,0 +1,40 @@
+{
+  "title": "Tickets and Supports",
+  "statusChanged": "Status changed to",
+  "search": "Search user, subject or ID...",
+  "filters": {
+    "all": "All Time",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "week": "Last 7 Days"
+  },
+  "table": {
+    "id": "Ticket ID",
+    "user": "User",
+    "subject": "Subject",
+    "date": "Date",
+    "status": "Status",
+    "action": "Action"
+  },
+  "actions": {
+    "viewDetails": "View Details",
+    "setEnquiry": "Set as Enquiry",
+    "setPending": "Set as Pending",
+    "setSolved": "Set as Solved",
+    "setAway": "Set as Away"
+  },
+  "modal": {
+    "details": "Ticket Details",
+    "subject": "Subject",
+    "description": "Detailed Description",
+    "close": "Close",
+    "reply": "Reply to User",
+    "submitted": "Submitted"
+  },
+  "status": {
+    "Enquiry": "Enquiry",
+    "Pending": "Pending",
+    "Solved": "Solved",
+    "Away": "Away"
+  }
+}

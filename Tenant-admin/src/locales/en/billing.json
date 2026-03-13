@@ -1,0 +1,8 @@
+{
+  "totalInvoices": "Total Invoices",
+  "paid": "Paid Amount",
+  "pending": "Pending Amount",
+  "overdue": "Overdue Amount",
+  "createInvoice": "Create Invoice",
+  "expenses": "Expenses"
+}

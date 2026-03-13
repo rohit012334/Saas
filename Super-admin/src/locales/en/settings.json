@@ -1,0 +1,48 @@
+{
+  "title": "Platform Settings",
+  "tabs": {
+    "general": "General",
+    "tenantDefaults": "Tenant Defaults",
+    "emailTemplates": "Email Templates",
+    "backupMaintenance": "Backup & Maintenance"
+  },
+  "general": {
+    "platformName": "Platform Name",
+    "platformLogo": "Platform Logo",
+    "supportEmail": "Support Email",
+    "supportPhone": "Support Phone",
+    "defaultCurrency": "Default Currency",
+    "defaultLanguage": "Default Language",
+    "timezone": "Timezone",
+    "dateFormat": "Date Format",
+    "save": "Save"
+  },
+  "tenantDefaults": {
+    "defaultTrial": "Default trial period (days)",
+    "autoApprove": "Auto-approve new signups",
+    "maxStaffPerPlan": "Max staff per plan",
+    "maxVehiclesPerPlan": "Max vehicles per plan",
+    "featureFlags": "Feature flags per plan",
+    "save": "Save"
+  },
+  "emailTemplates": {
+    "selectTemplate": "Select template",
+    "welcome": "Welcome Email",
+    "invoice": "Invoice Email",
+    "paymentFailed": "Payment Failed",
+    "suspension": "Suspension Notice",
+    "passwordReset": "Password Reset",
+    "subject": "Subject",
+    "body": "Body",
+    "preview": "Preview",
+    "saveTemplate": "Save Template"
+  },
+  "backup": {
+    "lastBackup": "Last backup",
+    "backupFrequency": "Backup frequency",
+    "manualBackup": "Run manual backup",
+    "maintenanceMode": "Maintenance Mode",
+    "maintenanceWarning": "All tenants will lose access.",
+    "systemVersion": "System version"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "title": "العملاء المنضمون",
+  "searchPlaceholder": "البحث عن العملاء...",
+  "allGarages": "جميع الورش",
+  "filters": {
+    "all": "كل الوقت",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "week": "آخر 7 أيام"
+  },
+  "table": {
+    "customer": "العميل",
+    "phone": "الهاتف",
+    "garage": "الورشة المرتبطة",
+    "joined": "انضم بـ",
+    "serviceCount": "عدد الخدمات",
+    "actions": "إجراءات",
+    "viewDetails": "عرض التفاصيل"
+  },
+  "modal": {
+    "contactInfo": "معلومات الاتصال",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "associatedGarage": "الورشة المرتبطة",
+    "totalServices": "إجمالي الخدمات",
+    "memberSince": "عضو منذ",
+    "registeredVehicles": "تفاصيل المركبات المسجلة",
+    "noVehicles": "لا توجد مركبات مسجلة",
+    "fullHistory": "عرض السجل الكامل"
+  },
+  "times": "مرات"
+}

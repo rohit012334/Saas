@@ -1,0 +1,34 @@
+{
+  "title": "المستخدمون الإداريون",
+  "statsTotalAdmins": "إجمالي الإداريين",
+  "statsActiveNow": "النشطون الآن",
+  "statsRolesCount": "عدد الأدوار",
+  "table": {
+    "avatar": "الصورة",
+    "name": "الاسم",
+    "email": "البريد",
+    "role": "الدور",
+    "status": "الحالة",
+    "lastLogin": "آخر دخول",
+    "actions": "إجراءات"
+  },
+  "roles": {
+    "superAdmin": "مشرف أعلى",
+    "supportManager": "مدير الدعم",
+    "billingAdmin": "مسؤول الفوترة",
+    "technicalAdmin": "مسؤول تقني"
+  },
+  "addAdmin": "إضافة مسؤول",
+  "permissionsTitle": "مصفوفة صلاحيات الأدوار",
+  "permissionsFull": "كامل",
+  "permissionsView": "عرض",
+  "permissionsNone": "لا يوجد",
+  "modal": {
+    "fullName": "الاسم الكامل",
+    "email": "البريد",
+    "role": "الدور",
+    "phone": "الهاتف",
+    "sendInvite": "إرسال دعوة بالبريد",
+    "tempPassword": "كلمة مرور مؤقتة"
+  }
+}

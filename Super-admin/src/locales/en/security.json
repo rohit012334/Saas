@@ -1,0 +1,36 @@
+{
+  "title": "Security & Audit Logs",
+  "overviewTitle": "Security Overview",
+  "failedLogins": "Failed Logins (24h)",
+  "activeSessions": "Active Sessions",
+  "suspiciousIps": "Suspicious IPs",
+  "twoFaEnabled": "2FA Enabled Admins",
+  "dismissAlert": "Dismiss",
+  "auditLogsTitle": "Audit Logs",
+  "filters": {
+    "dateRange": "Date Range",
+    "actionType": "Action Type",
+    "user": "User",
+    "tenant": "Tenant"
+  },
+  "table": {
+    "timestamp": "Timestamp",
+    "adminUser": "Admin",
+    "action": "Action",
+    "target": "Target",
+    "ipAddress": "IP Address",
+    "location": "Location",
+    "status": "Status"
+  },
+  "exportCsv": "Export CSV",
+  "actions": {
+    "TENANT_SUSPENDED": "Tenant Suspended",
+    "PLAN_UPDATED": "Plan Updated",
+    "API_KEY_ROTATED": "API Key Rotated",
+    "ADMIN_LOGIN": "Admin Login",
+    "ADMIN_CREATED": "Admin Created",
+    "TENANT_DELETED": "Tenant Deleted",
+    "ANNOUNCEMENT_SENT": "Announcement Sent",
+    "SETTINGS_CHANGED": "Settings Changed"
+  }
+}

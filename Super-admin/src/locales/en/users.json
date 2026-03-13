@@ -1,0 +1,34 @@
+{
+  "title": "Manage Access",
+  "statsTotalAdmins": "Total Admins",
+  "statsActiveNow": "Active Now",
+  "statsRolesCount": "Roles Count",
+  "table": {
+    "avatar": "Avatar",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "lastLogin": "Last Login",
+    "actions": "Actions"
+  },
+  "roles": {
+    "superAdmin": "Super Admin",
+    "supportManager": "Support Manager",
+    "billingAdmin": "Billing Admin",
+    "technicalAdmin": "Technical Admin"
+  },
+  "addAdmin": "Add Admin",
+  "permissionsTitle": "Role Permissions Matrix",
+  "permissionsFull": "Full",
+  "permissionsView": "View",
+  "permissionsNone": "None",
+  "modal": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "role": "Role",
+    "phone": "Phone",
+    "sendInvite": "Send Invite Email",
+    "tempPassword": "Temporary Password"
+  }
+}

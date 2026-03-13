@@ -1,0 +1,23 @@
+{
+  "downloadReport": "Download Report",
+  "revenue": "Revenue",
+  "jobsOperations": "Jobs & Operations",
+  "inventory": "Inventory",
+  "technicianPerformance": "Technician Performance",
+  "customerAnalytics": "Customer Analytics",
+  "financial": "Financial",
+  "totalRevenue": "Total Revenue",
+  "avgTransaction": "Avg Transaction",
+  "bestDayRevenue": "Best Day Revenue",
+  "projectedMonth": "Projected Month",
+  "dailyRevenueTrend": "Daily Revenue Trend",
+  "revenueByServiceType": "Revenue by Service Type",
+  "topCustomersBySpending": "Top 10 Customers by Spending",
+  "customerName": "Customer Name",
+  "visits": "Visits",
+  "vehicles": "Vehicles",
+  "totalSpent": "Total Spent",
+  "lastThirtyDays": "Last 30 Days",
+  "comingSoon": "Full Report for {{tab}} coming soon",
+  "calculatingMetrics": "We are calculating the latest metrics for this period. Check back in a few minutes."
+}

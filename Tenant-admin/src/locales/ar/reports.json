@@ -1,0 +1,23 @@
+{
+  "downloadReport": "تحميل التقرير",
+  "revenue": "الإيرادات",
+  "jobsOperations": "الوظائف والعمليات",
+  "inventory": "المخزون",
+  "technicianPerformance": "أداء الفنيين",
+  "customerAnalytics": "تحليلات العملاء",
+  "financial": "المالية",
+  "totalRevenue": "إجمالي الإيرادات",
+  "avgTransaction": "متوسط المعاملة",
+  "bestDayRevenue": "أفضل إيرادات يوم",
+  "projectedMonth": "توقعات الشهر",
+  "dailyRevenueTrend": "اتجاه الإيرادات اليومية",
+  "revenueByServiceType": "الإيرادات حسب نوع الخدمة",
+  "topCustomersBySpending": "أفضل 10 عملاء حسب الإنفاق",
+  "customerName": "اسم العميل",
+  "visits": "الزيارات",
+  "vehicles": "المركبات",
+  "totalSpent": "إجمالي الإنفاق",
+  "lastThirtyDays": "آخر 30 يوم",
+  "comingSoon": "التقرير الكامل لـ {{tab}} قادم قريباً",
+  "calculatingMetrics": "نقوم بحساب أحدث المقاييس لهذه الفترة. تحقق مرة أخرى بعد بضع دقائق."
+}

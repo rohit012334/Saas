@@ -1,0 +1,61 @@
+{
+  "title": "Subscriptions",
+  "plansTitle": "Plans & Pricing",
+  "paymentHistoryTitle": "Payment History",
+  "userSubscriptionsTitle": "User Subscriptions",
+  "editPlan": "Edit Plan",
+  "addPlan": "Add Plan",
+  "plansSubtitle": "Garage workshop plans — 2 Wheeler, 4 Wheeler & Both. Monthly and Yearly plans available. Edit to update plans.",
+  "noPlansFor": "No plans for",
+  "addPlanNotice": "Add a plan for this vehicle type from the button above.",
+  "filterAll": "All Vehicles",
+  "vehicleTypes": {
+    "2 Wheelers": "2 Wheelers",
+    "4 Wheelers": "4 Wheelers",
+    "Both": "Both",
+    "4 Wheeler + Heavy Vehicle": "4 Wheeler + Heavy Vehicle"
+  },
+  "monthly": "per month",
+  "yearly": "per year",
+  "savePercent": "save",
+  "subscribers": "subscribers",
+  "summaryCollected": "Total Collected This Month",
+  "summaryFailed": "Failed Payments",
+  "summaryRefunds": "Refunds Issued",
+  "summaryNet": "Net Revenue",
+  "filters": { "dateRange": "Date Range", "plan": "Plan", "status": "Status" },
+  "table": {
+    "invoice": "Invoice #",
+    "tenant": "Tenant",
+    "plan": "Plan",
+    "amount": "Amount",
+    "date": "Date",
+    "method": "Payment Method",
+    "status": "Status",
+    "actions": "Actions"
+  },
+  "userSubscriptions": {
+    "table": {
+      "user": "User",
+      "subscription": "Subscription",
+      "purchaseDate": "Purchase date",
+      "expiryDate": "Expiry date",
+      "status": "Status"
+    },
+    "stats": {
+      "active": "Active",
+      "expired": "Expired",
+      "cancelled": "Cancelled",
+      "total": "Total"
+    },
+    "searchPlaceholder": "Search user, email, plan...",
+    "filters": { "plan": "Plan", "status": "Status" },
+    "empty": "No user subscriptions found."
+  },
+  "statusPaid": "Paid",
+  "statusFailed": "Failed",
+  "statusRefunded": "Refunded",
+  "viewInvoice": "View Invoice",
+  "refund": "Refund",
+  "refundConfirm": "Refund this payment?"
+}

@@ -1,0 +1,24 @@
+{
+  "title": "إدارة API",
+  "statsCallsToday": "استدعاءات API اليوم",
+  "statsCallsMonth": "استدعاءات API هذا الشهر",
+  "statsErrorRate": "معدل الأخطاء",
+  "statsAvgResponse": "متوسط زمن الاستجابة",
+  "keysTitle": "مفاتيح API",
+  "usageTitle": "استخدام API (آخر 30 يومًا)",
+  "table": {
+    "serviceName": "الخدمة",
+    "category": "الفئة",
+    "key": "المفتاح",
+    "status": "الحالة",
+    "lastUsed": "آخر استخدام",
+    "actions": "إجراءات"
+  },
+  "viewKey": "عرض المفتاح",
+  "updateKey": "تحديث المفتاح",
+  "rotateKey": "تدوير المفتاح",
+  "toggleActive": "نشط",
+  "toggleInactive": "غير نشط",
+  "keyModalTitle": "مفتاح API",
+  "updateKeyModalTitle": "تحديث مفتاح API"
+}

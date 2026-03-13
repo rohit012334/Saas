@@ -1,0 +1,7 @@
+{
+  "totalScans": "إجمالي الفحوصات",
+  "issuesFound": "المشاكل التي تم العثور عليها",
+  "resolved": "تم الحل",
+  "pendingReview": "قيد المراجعة",
+  "viewReport": "عرض التقرير"
+}
