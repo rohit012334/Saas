@@ -14,9 +14,9 @@ const PartsSourcing = () => {
   const categories = ['Engine', 'Brakes', 'Suspension', 'Electrical', 'Filters', 'Lubricants'];
 
   const results = [
-    { id: 1, name: 'BOSCH Spark Plug', price: 450, code: 'FR7DC+', brand: 'BOSCH', availability: 'In Stock', rating: 4.8 },
-    { id: 2, name: 'Mobil1 Engine Oil 5W-30', price: 3200, code: 'MOB-5W30-4L', brand: 'Mobil1', availability: 'In Stock', rating: 4.9 },
-    { id: 3, name: 'Brembo Brake Pads (Front)', price: 5800, code: 'P06038', brand: 'Brembo', availability: '2-3 Days', rating: 4.7 },
+    { id: 1, name: t('partsSourcing:products.boschSparkPlug'), price: 450, code: 'FR7DC+', brand: 'BOSCH', availabilityCode: 'inStock', rating: 4.8 },
+    { id: 2, name: t('partsSourcing:products.mobil1EngineOil'), price: 3200, code: 'MOB-5W30-4L', brand: 'Mobil1', availabilityCode: 'inStock', rating: 4.9 },
+    { id: 3, name: t('partsSourcing:products.bremboBrakePads'), price: 5800, code: 'P06038', brand: 'Brembo', availabilityCode: 'days2_3', rating: 4.7 },
   ];
 
   return (
@@ -28,21 +28,21 @@ const PartsSourcing = () => {
 
       <div className="glass-card p-8 bg-gradient-to-br from-primary/10 to-transparent border-primary/20">
          <div className="max-w-3xl mx-auto space-y-6">
-            <h2 className="text-2xl font-bold text-center text-white">Find parts from global suppliers</h2>
+            <h2 className="text-2xl font-bold text-center text-white">{t('partsSourcing:findPartsTitle')}</h2>
             <div className="relative flex items-center gap-3">
                <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={20} />
                   <input 
-                    placeholder="Search by Part Name, Number, or OEM Code..." 
+                    placeholder={t('partsSourcing:searchPlaceholder')} 
                     className="w-full bg-surface border border-border rounded-2xl pl-12 pr-4 py-4 text-white outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-smooth shadow-2xl" 
                   />
                </div>
                <button className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-2xl font-bold transition-smooth shadow-xl shadow-primary/20">
-                  Search
+                  {t('partsSourcing:searchBtn')}
                </button>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
-               {['Honda City 2021', 'Engine Parts', 'Brake Pads', 'Oil Filters'].map(tag => (
+               {[t('partsSourcing:tags.hondaCity2021'), t('partsSourcing:tags.engineParts'), t('partsSourcing:tags.brakePads'), t('partsSourcing:tags.oilFilters')].map(tag => (
                  <span key={tag} className="text-[10px] text-muted bg-white/5 border border-border px-2 py-1 rounded-full cursor-pointer hover:bg-white/10 transition-smooth">
                     {tag}
                  </span>
@@ -55,7 +55,7 @@ const PartsSourcing = () => {
          {/* Filters Sidebar */}
          <div className="lg:col-span-3 space-y-6">
             <div className="surface-card p-6">
-               <h3 className="font-bold text-sm mb-4 border-b border-border pb-2 uppercase tracking-wider">Brands</h3>
+               <h3 className="font-bold text-sm mb-4 border-b border-border pb-2 uppercase tracking-wider">{t('partsSourcing:filters.brands')}</h3>
                <div className="space-y-2">
                   {brands.map(brand => (
                     <label key={brand} className="flex items-center gap-2 cursor-pointer group">
@@ -66,12 +66,12 @@ const PartsSourcing = () => {
                </div>
             </div>
             <div className="surface-card p-6">
-               <h3 className="font-bold text-sm mb-4 border-b border-border pb-2 uppercase tracking-wider">Category</h3>
+               <h3 className="font-bold text-sm mb-4 border-b border-border pb-2 uppercase tracking-wider">{t('partsSourcing:filters.category')}</h3>
                <div className="space-y-2">
                   {categories.map(cat => (
                     <label key={cat} className="flex items-center gap-2 cursor-pointer group">
                        <input type="checkbox" className="w-4 h-4 rounded border-border bg-surface text-primary" />
-                       <span className="text-sm text-muted group-hover:text-white transition-smooth">{cat}</span>
+                       <span className="text-sm text-muted group-hover:text-white transition-smooth">{t(`partsSourcing:categories.${cat}`)}</span>
                     </label>
                   ))}
                </div>
@@ -81,12 +81,12 @@ const PartsSourcing = () => {
          {/* Results Grid */}
          <div className="lg:col-span-9 space-y-6">
             <div className="flex items-center justify-between">
-               <p className="text-sm text-muted">Showing {results.length} results for "Spark Plug"</p>
+               <p className="text-sm text-muted">{t('partsSourcing:showingResults', { count: results.length, query: 'Spark Plug' })}</p>
                <div className="flex gap-2">
                   <button className="p-2 border border-border rounded-lg text-muted hover:text-white"><Filter size={18} /></button>
                   <select className="bg-surface border border-border rounded-lg text-sm px-3 py-1 outline-none">
-                     <option>Price: Low to High</option>
-                     <option>Price: High to Low</option>
+                     <option>{t('partsSourcing:sort.priceLowHigh')}</option>
+                     <option>{t('partsSourcing:sort.priceHighLow')}</option>
                   </select>
                </div>
             </div>
@@ -112,15 +112,15 @@ const PartsSourcing = () => {
                        
                        <div className="flex items-center justify-between">
                           <p className="text-2xl font-black text-white">₹{item.price}</p>
-                          <Badge variant={item.availability === 'In Stock' ? 'success' : 'warning'}>{item.availability}</Badge>
+                          <Badge variant={item.availabilityCode === 'inStock' ? 'success' : 'warning'}>{t(`partsSourcing:availability.${item.availabilityCode}`)}</Badge>
                        </div>
 
                        <div className="mt-auto pt-4 flex gap-2">
                           <button className="flex-1 bg-surface border border-border text-white px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-white/5 transition-smooth flex items-center justify-center gap-2">
-                             <Plus size={14} /> Add to PO
+                             <Plus size={14} /> {t('partsSourcing:addToPO')}
                           </button>
                           <button className="flex-1 bg-primary text-white px-3 py-2.5 rounded-xl text-xs font-bold hover:bg-primary/90 transition-smooth flex items-center justify-center gap-2">
-                             <ShoppingCart size={14} /> Buy Now
+                             <ShoppingCart size={14} /> {t('partsSourcing:buyNow')}
                           </button>
                        </div>
                     </div>

@@ -30,6 +30,8 @@ import authEn from './locales/en/auth.json';
 import authAr from './locales/ar/auth.json';
 import settingsEn from './locales/en/settings.json';
 import settingsAr from './locales/ar/settings.json';
+import partsSourcingEn from './locales/en/partsSourcing.json';
+import partsSourcingAr from './locales/ar/partsSourcing.json';
 
 // Use English as fallback for missing keys to keep it fast
 const resources = {
@@ -48,6 +50,7 @@ const resources = {
     services: servicesEn,
     auth: authEn,
     settings: settingsEn,
+    partsSourcing: partsSourcingEn,
   },
   ar: {
     common: commonAr,
@@ -64,6 +67,7 @@ const resources = {
     services: servicesAr,
     auth: authAr,
     settings: settingsAr,
+    partsSourcing: partsSourcingAr,
   },
 };
 
@@ -79,7 +83,7 @@ i18n
     ns: [
       'common', 'sidebar', 'dashboard', 'repairOrders', 
       'diagnostics', 'inventory', 'fleet', 'hr', 
-      'customers', 'billing', 'reports', 'services', 'auth', 'settings'
+      'customers', 'billing', 'reports', 'services', 'auth', 'settings', 'partsSourcing'
     ],
     defaultNS: 'common',
   });

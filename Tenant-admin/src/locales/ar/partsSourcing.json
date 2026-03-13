@@ -1,0 +1,39 @@
+{
+  "findPartsTitle": "ابحث عن قطع الغيار من الموردين العالميين",
+  "searchPlaceholder": "ابحث باسم القطعة أو الرقم أو رمز OEM...",
+  "searchBtn": "بحث",
+  "tags": {
+    "hondaCity2021": "هوندا سيتي 2021",
+    "engineParts": "أجزاء المحرك",
+    "brakePads": "تيل الفرامل",
+    "oilFilters": "فلاتر الزيت"
+  },
+  "filters": {
+    "brands": "العلامات التجارية",
+    "category": "الفئة"
+  },
+  "categories": {
+    "Engine": "محرك",
+    "Brakes": "فرامل",
+    "Suspension": "نظام التعليق",
+    "Electrical": "كهرباء",
+    "Filters": "فلاتر",
+    "Lubricants": "زيوت وشحوم"
+  },
+  "showingResults": "عرض {{count}} نتائج لـ \"{{query}}\"",
+  "sort": {
+    "priceLowHigh": "السعر: من الأقل للأعلى",
+    "priceHighLow": "السعر: من الأعلى للأقل"
+  },
+  "addToPO": "إضافة لطلب الشراء",
+  "buyNow": "اشتري الآن",
+  "availability": {
+    "inStock": "في المخزن",
+    "days2_3": "2-3 أيام"
+  },
+  "products": {
+    "boschSparkPlug": "شمعة إشعال بوش",
+    "mobil1EngineOil": "زيت محرك موبيل1 5W-30",
+    "bremboBrakePads": "تيل فرامل بريمبو (أمامي)"
+  }
+}

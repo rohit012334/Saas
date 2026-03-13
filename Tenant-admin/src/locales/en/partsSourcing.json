@@ -1,0 +1,39 @@
+{
+  "findPartsTitle": "Find parts from global suppliers",
+  "searchPlaceholder": "Search by Part Name, Number, or OEM Code...",
+  "searchBtn": "Search",
+  "tags": {
+    "hondaCity2021": "Honda City 2021",
+    "engineParts": "Engine Parts",
+    "brakePads": "Brake Pads",
+    "oilFilters": "Oil Filters"
+  },
+  "filters": {
+    "brands": "Brands",
+    "category": "Category"
+  },
+  "categories": {
+    "Engine": "Engine",
+    "Brakes": "Brakes",
+    "Suspension": "Suspension",
+    "Electrical": "Electrical",
+    "Filters": "Filters",
+    "Lubricants": "Lubricants"
+  },
+  "showingResults": "Showing {{count}} results for \"{{query}}\"",
+  "sort": {
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low"
+  },
+  "addToPO": "Add to PO",
+  "buyNow": "Buy Now",
+  "availability": {
+    "inStock": "In Stock",
+    "days2_3": "2-3 Days"
+  },
+  "products": {
+    "boschSparkPlug": "BOSCH Spark Plug",
+    "mobil1EngineOil": "Mobil1 Engine Oil 5W-30",
+    "bremboBrakePads": "Brembo Brake Pads (Front)"
+  }
+}
