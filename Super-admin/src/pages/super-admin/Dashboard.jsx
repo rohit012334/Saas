@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import {
   Building2,
   CreditCard,
-  IndianRupee,
+  DollarSign,
   UserPlus,
 } from 'lucide-react'
 import {
@@ -36,22 +36,22 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 
-const PLAN_COLORS = { Basic: '#3B82F6', Pro: '#8B5CF6', Enterprise: '#10B981', Trial: '#F59E0B' }
+const PLAN_COLORS = { Basic: '#3B82F6', Pro: '#8B5CF6', Enterprise: '#10B981' }
 
 export function Dashboard() {
   const { t } = useTranslation('dashboard')
   const [loading] = useState(false)
+  const [activePlan, setActivePlan] = useState(null)
 
   const donutData = [
-    { name: t('plans.Basic'), value: 1240, color: PLAN_COLORS.Basic },
-    { name: t('plans.Pro'), value: 892, color: PLAN_COLORS.Pro },
-    { name: t('plans.Enterprise'), value: 209, color: PLAN_COLORS.Enterprise },
-    { name: t('plans.Trial'), value: 506, color: PLAN_COLORS.Trial },
+    { name: t('plans.Basic'), value: 1240, profit: 24, color: PLAN_COLORS.Basic },
+    { name: t('plans.Pro'), value: 892, profit: 38, color: PLAN_COLORS.Pro },
+    { name: t('plans.Enterprise'), value: 209, profit: 54, color: PLAN_COLORS.Enterprise },
   ]
   const totalPlans = donutData.reduce((s, d) => s + d.value, 0)
 
   // Number ko Rupees format (Lakhs me agar bada ho) me convert karne ka function
-  const formatRevenue = (n) => (n >= 1e5 ? `₹${(n / 1e5).toFixed(2)}L` : `₹${n?.toLocaleString()}`)
+  const formatRevenue = (n) => (n >= 1e5 ? `$${(n / 1e5).toFixed(2)}L` : `$${n?.toLocaleString()}`)
 
   return (
     <div className="space-y-6 animate-in">
@@ -80,7 +80,7 @@ export function Dashboard() {
             changeLabel={t('thisMonth')}
           />
           <StatCard
-            icon={IndianRupee}
+            icon={DollarSign}
             label={t('monthlyRevenue')}
             value={formatRevenue(dashboardStats.monthlyRevenue)}
             change={dashboardStats.monthlyRevenueChange}
@@ -88,8 +88,8 @@ export function Dashboard() {
           />
           <StatCard
             icon={UserPlus}
-            label={t('newSignupsToday')}
-            value={dashboardStats.newSignupsToday}
+            label={t('newSignupsWeek')}
+            value={dashboardStats.newSignupsWeek}
             changeLabel={t('today')}
           />
         </div>
@@ -106,8 +106,8 @@ export function Dashboard() {
                 <AreaChart data={revenueChart}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                   <XAxis dataKey="month" stroke="#94A3B8" fontSize={12} />
-                  <YAxis stroke="#94A3B8" fontSize={12} tickFormatter={(v) => `₹${(v / 1e6).toFixed(1)}M`} />
-                  <Tooltip formatter={(v) => [`₹${Number(v).toLocaleString()}`, '']} />
+                  <YAxis stroke="#94A3B8" fontSize={12} tickFormatter={(v) => `$${(v / 1e6).toFixed(1)}M`} />
+                  <Tooltip formatter={(v) => [`$${Number(v).toLocaleString()}`, '']} />
                   <Legend />
                   {/* Revenue aur Target ka line graph data yaha map ho rha hai */}
                   <Area type="monotone" dataKey="revenue" stroke="#3B82F6" fill="#3B82F6/20" name={t('revenue')} />
@@ -117,34 +117,67 @@ export function Dashboard() {
             </div>
           </CardContent>
         </Card>
-        <Card className="min-w-0 lg:col-span-2">
+        <Card className="min-w-0 lg:col-span-2 overflow-visible">
           <CardHeader>
             <CardTitle>{t('planDistribution')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex justify-center">
-              <ResponsiveContainer width="100%" height={220}>
-                <PieChart>
-                  <Pie
-                    data={donutData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    paddingAngle={2}
-                    dataKey="value"
-                  // label={({ name, value }) => `${name} ${((value / totalPlans) * 100).toFixed(0)}%`}
-                  >
-                    {donutData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fill="#F1F5F9" fontSize={18}>
-                    {totalPlans.toLocaleString()}
-                  </text>
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="flex flex-col items-center">
+              <div className="h-[180px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={donutData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={85}
+                      paddingAngle={5}
+                      dataKey="value"
+                      onMouseEnter={(_, index) => setActivePlan(index)}
+                      onMouseLeave={() => setActivePlan(null)}
+                    >
+                      {donutData.map((entry, i) => (
+                        <Cell
+                          key={i}
+                          fill={entry.color}
+                          stroke="transparent"
+                          className="cursor-pointer outline-none transition-all duration-300"
+                          style={{
+                            filter: activePlan === i ? `drop-shadow(0 0 8px ${entry.color}66)` : 'none',
+                            opacity: activePlan === null || activePlan === i ? 1 : 0.4,
+                            transform: activePlan === i ? 'scale(1.05)' : 'scale(1)',
+                            transformOrigin: 'center', fontSize: '20px',
+                          }}
+                        />
+                      ))}
+                    </Pie>
+                    <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
+                      <tspan
+                        x="50%"
+                        dy={activePlan !== null ? "-0.2em" : "-0.5em"}
+                        fill="#94A3B8"
+                        fontSize={activePlan !== null ? 14 : 12}
+                        fontWeight="500"
+                      >
+                        {activePlan !== null ? donutData[activePlan].name : 'TOTAL'}
+                      </tspan>
+                      <tspan
+                        x="50%"
+                        dy="1.5em"
+                        fill={activePlan !== null ? donutData[activePlan].color : "#F1F5F9"}
+                        fontSize={24}
+                        fontWeight="bold"
+                      >
+                        {activePlan !== null
+                          ? `${((donutData[activePlan].value / totalPlans) * 100).toFixed(1)}%`
+                          : totalPlans.toLocaleString()
+                        }
+                      </tspan>
+                    </text>
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -193,12 +226,8 @@ export function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="grid gap-2">
-              <QuickStatRow label={t('churnedThisMonth')} value={dashboardStats.churnedThisMonth} />
-              <QuickStatRow label={t('avgRevenuePerTenant')} value={`₹${dashboardStats.avgRevenuePerTenant?.toLocaleString()}`} />
-              <QuickStatRow label={t('platformUptime')} value={dashboardStats.platformUptime} />
+              {/* <QuickStatRow label={t('avgRevenuePerTenant')} value={`$${dashboardStats.avgRevenuePerTenant?.toLocaleString()}`} /> */}
               <QuickStatRow label={t('openSupportTickets')} value={dashboardStats.openSupportTickets} />
-              <QuickStatRow label={t('apiCallsToday')} value={dashboardStats.apiCallsToday?.toLocaleString()} />
-              <QuickStatRow label={t('apiCallsThisMonth')} value={dashboardStats.apiCallsThisMonth?.toLocaleString()} />
             </div>
           </CardContent>
         </Card>

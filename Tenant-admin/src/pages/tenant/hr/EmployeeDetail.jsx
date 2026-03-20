@@ -214,7 +214,7 @@ const EmployeeDetail = () => {
                <p className="text-xs text-muted mb-4">{t('hr:topTechnicianText')}</p>
                <div className="flex items-center justify-between">
                   <span className="text-[10px] text-muted uppercase">{t('hr:potentialBonus')}</span>
-                  <span className="text-sm font-black text-success">₹4,500</span>
+                  <span className="text-sm font-black text-success">$4,500</span>
                </div>
             </div>
          </div> */}

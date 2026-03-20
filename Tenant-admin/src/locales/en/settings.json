@@ -1,5 +1,6 @@
 {
   "garageProfile": "Garage Profile",
+  "platformSettings": "Platform Settings",
   "usersRoles": "Users & Roles",
   "notifications": "Notifications",
   "invoiceSettings": "Invoice Settings",
@@ -11,7 +12,6 @@
   "garageName": "Garage Name",
   "ownerName": "Owner Name",
   "phoneNumber": "Phone Number",
-  "gstNumber": "GST Number",
   "address": "Address",
   "workingHours": "Working Hours",
   "logo": "Logo",
@@ -21,5 +21,15 @@
   "thursday": "Thursday",
   "friday": "Friday",
   "saturday": "Saturday",
-  "sunday": "Sunday"
+  "sunday": "Sunday",
+  "general": "General",
+  "platformName": "Platform Name",
+  "platformBranding": "Platform Branding",
+  "emailConfig": "Email Configuration",
+  "defaultLanguage": "Default Language",
+  "currency": "Currency",
+  "smtpHost": "SMTP Host",
+  "smtpPort": "SMTP Port",
+  "smtpUser": "SMTP Username",
+  "smtpPass": "SMTP Password"
 }

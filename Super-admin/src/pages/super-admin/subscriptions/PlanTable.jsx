@@ -34,7 +34,7 @@ export function PlanTable({ plans, onEdit, onDelete }) {
         header: 'Price',
         accessorKey: 'price',
         cell: ({ getValue }) => (
-          <span>₹{Number(getValue()).toLocaleString()}</span>
+          <span>${Number(getValue()).toLocaleString()}</span>
         ),
       },
       {

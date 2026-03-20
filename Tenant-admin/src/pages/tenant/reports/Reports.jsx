@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
    BarChart2, PieChart as PieChartIcon, LineChart as LineChartIcon,
    Download, Calendar, TrendingUp, TrendingDown, Users, Package,
-   IndianRupee, Wrench
+   DollarSign, Wrench
 } from 'lucide-react';
 import {
    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -64,10 +64,10 @@ const Reports = () => {
             {activeTab === 'revenue' && (
                <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                     <StatCard title={t('reports:totalRevenue')} value="₹12,45,000" icon={IndianRupee} trend="up" trendValue="15" color="green" />
-                     <StatCard title={t('reports:avgTransaction')} value="₹4,200" icon={TrendingUp} trend="up" trendValue="5" color="blue" />
-                     <StatCard title={t('reports:bestDayRevenue')} value="₹72,000" icon={Calendar} color="purple" />
-                     <StatCard title={t('reports:projectedMonth')} value="₹15.2L" icon={BarChart2} color="amber" />
+                     <StatCard title={t('reports:totalRevenue')} value="$12,45,000" icon={DollarSign} trend="up" trendValue="15" color="green" />
+                     <StatCard title={t('reports:avgTransaction')} value="$4,200" icon={TrendingUp} trend="up" trendValue="5" color="blue" />
+                     <StatCard title={t('reports:bestDayRevenue')} value="$72,000" icon={Calendar} color="purple" />
+                     <StatCard title={t('reports:projectedMonth')} value="$15.2L" icon={BarChart2} color="amber" />
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -84,7 +84,7 @@ const Reports = () => {
                                  </defs>
                                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
                                  <XAxis dataKey="name" stroke="#94A3B8" fontSize={12} tickLine={false} axisLine={false} />
-                                 <YAxis stroke="#94A3B8" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `₹${v / 1000}k`} />
+                                 <YAxis stroke="#94A3B8" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v / 1000}k`} />
                                  <Tooltip contentStyle={{ backgroundColor: '#1E293B', border: '1px solid #334155', borderRadius: '12px' }} />
                                  <Area type="monotone" dataKey="revenue" stroke="#3B82F6" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
                               </AreaChart>
@@ -104,7 +104,7 @@ const Reports = () => {
                               ]}>
                                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
                                  <XAxis dataKey="name" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
-                                 <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `₹${v / 1000}k`} />
+                                 <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v / 1000}k`} />
                                  <Tooltip contentStyle={{ backgroundColor: '#1E293B', border: '1px solid #334155', borderRadius: '12px' }} />
                                  <Bar dataKey="val" fill="#3B82F6" radius={[4, 4, 0, 0]} />
                               </BarChart>
@@ -134,7 +134,7 @@ const Reports = () => {
                                  <td className="p-4 text-white font-bold">{row.name}</td>
                                  <td className="p-4 text-center text-muted">{row.visits}</td>
                                  <td className="p-4 text-center text-muted">{row.cars}</td>
-                                 <td className="p-4 text-right text-white font-black">₹{row.spent.toLocaleString()}</td>
+                                 <td className="p-4 text-right text-white font-black">${row.spent.toLocaleString()}</td>
                               </tr>
                            ))}
                         </tbody>

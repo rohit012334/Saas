@@ -46,7 +46,7 @@ function getFeatureIcon(featureText) {
 
 export function PlanCards({ plans, onEdit, onDelete }) {
   const { t } = useTranslation(['subscriptions', 'common'])
-  const [vehicleFilter, setVehicleFilter] = useState('2 Wheelers')
+  const [vehicleFilter, setVehicleFilter] = useState('Motorcycles')
 
   const filteredPlans = useMemo(() => {
     return plans.filter((p) => p.vehicleType === vehicleFilter)
@@ -57,7 +57,7 @@ export function PlanCards({ plans, onEdit, onDelete }) {
       {/* Toggle: 2 Wheeler | 4 Wheeler | Both — photo jaisa */}
       <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0">
         <div className="inline-flex rounded-xl border border-border bg-muted/30 p-1">
-          {['2 Wheelers', '4 Wheelers', 'Both', '4 Wheeler + Heavy Vehicle'].map((opt) => (
+          {['Motorcycles', 'Car', 'Truck', 'Bus', 'Heavy Equipments'].map((opt) => (
             <button
               key={opt}
               type="button"
@@ -91,10 +91,10 @@ export function PlanCards({ plans, onEdit, onDelete }) {
               </div>
 
               <p className="text-2xl font-bold tracking-tight text-foreground">
-                ₹{Number(plan.price).toLocaleString()}
+                ${Number(plan.price).toLocaleString()}
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                INR / {plan.duration === 'Monthly' ? t('monthly') : t('yearly')} ({t('tenants:gst')})
+                {plan.duration === 'Monthly' ? t('monthly') : plan.duration === 'Yearly' ? t('yearly') : t(plan.duration)}
               </p>
 
               <p className="mt-3 text-xs text-muted-foreground">

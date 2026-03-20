@@ -323,7 +323,7 @@ function ViewCustomerModal({ open, customer, onClose }) {
                       <p className="text-xs font-bold text-text text-black">{v.color}</p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-[9px] uppercase font-bold text-muted-foreground tracking-tighter mb-1">{t('tenants:gst')}</p>
+                      <p className="text-[9px] uppercase font-bold text-muted-foreground tracking-tighter mb-1">{t('modal.vin')}</p>
                       <p className="text-[10px] font-mono font-bold text-primary/80 bg-primary/5 p-1.5 rounded border border-primary/5">{v.vin}</p>
                     </div>
                   </div>

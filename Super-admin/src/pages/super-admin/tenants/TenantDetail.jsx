@@ -61,7 +61,6 @@ export function TenantDetail() {
               <p className="text-sm text-muted-foreground">{t('contactEmail')}: {tenant.email}</p>
               <p className="text-sm text-muted-foreground">{t('contactPhone')}: {tenant.phone}</p>
               <p className="text-sm text-muted-foreground">{t('country')}: {tenant.country}</p>
-              <p className="text-sm text-muted-foreground">{t('gst')}: {tenant.gstNumber || '—'}</p>
               <p className="text-sm text-muted-foreground">{t('joined')}: {tenant.joinedDate}</p>
               <p className="text-sm text-muted-foreground">{t('subscriptionPlan')}: <Badge>{tenant.plan}</Badge></p>
             </div>
@@ -70,7 +69,7 @@ export function TenantDetail() {
       </Card>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatBox label={t('statsRevenue')} value={`₹${(tenant.mrr || 0).toLocaleString()}`} />
+        <StatBox label={t('statsRevenue')} value={`$${(tenant.mrr || 0).toLocaleString()}`} />
         <StatBox label={t('statsJobsThisMonth')} value={tenant.jobsThisMonth} />
         <StatBox label={t('statsStaffCount')} value={tenant.staffCount} />
         <StatBox label={t('statsVehicles')} value={tenant.vehiclesRegistered} />
@@ -99,8 +98,8 @@ export function TenantDetail() {
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={revenueByMonth}>
                     <XAxis dataKey="month" stroke="#94A3B8" />
-                    <YAxis stroke="#94A3B8" tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
-                    <Tooltip formatter={(v) => [`₹${Number(v).toLocaleString()}`, 'Revenue']} />
+                    <YAxis stroke="#94A3B8" tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                    <Tooltip formatter={(v) => [`$${Number(v).toLocaleString()}`, 'Revenue']} />
                     <Bar dataKey="revenue" fill="#3B82F6" radius={4} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -123,7 +122,7 @@ export function TenantDetail() {
                     <TableCell>{tenant.plan}</TableCell>
                     <TableCell>{tenant.joinedDate}</TableCell>
                     <TableCell>—</TableCell>
-                    <TableCell>₹{(tenant.mrr || 0).toLocaleString()}</TableCell>
+                    <TableCell>${(tenant.mrr || 0).toLocaleString()}</TableCell>
                     <TableCell><Badge variant="paid">Active</Badge></TableCell>
                   </TableRow>
                 </TableBody>

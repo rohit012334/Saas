@@ -4,7 +4,6 @@ export const garageInfo = {
   plan: "Pro",
   city: "Delhi",
   phone: "+91 98765 43210",
-  gstNo: "07AABCS1429B1ZB",
 };
 
 export const employees = [
@@ -249,8 +248,8 @@ export const customers = [
 ];
 
 export const invoices = [
-  { id: 'inv1', invoiceNo: 'INV-2001', customer: 'Rahul Verma', vehicle: 'DL 1CA 1234', amount: 12000, gst: 2160, total: 14160, date: '2026-03-12', dueDate: '2024-03-15', status: 'Paid', paymentMethod: 'UPI' },
-  { id: 'inv2', invoiceNo: 'INV-2002', customer: 'Sandeep Tiwari', vehicle: 'UP 16 AB 5678', amount: 8500, gst: 1530, total: 10030, date: '2026-03-11', dueDate: '2024-03-16', status: 'Paid', paymentMethod: 'Cash' },
+  { id: 'inv1', invoiceNo: 'INV-2001', customer: 'Rahul Verma', vehicle: 'DL 1CA 1234', amount: 12000, total: 12000, date: '2026-03-12', dueDate: '2024-03-15', status: 'Paid', paymentMethod: 'UPI' },
+  { id: 'inv2', invoiceNo: 'INV-2002', customer: 'Sandeep Tiwari', vehicle: 'UP 16 AB 5678', amount: 8500, total: 8500, date: '2026-03-11', dueDate: '2024-03-16', status: 'Paid', paymentMethod: 'Cash' },
 ];
 
 export const revenueChartData = [

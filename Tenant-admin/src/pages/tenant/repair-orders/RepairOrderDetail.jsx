@@ -20,13 +20,13 @@ const RepairOrderDetail = () => {
 
    const mechanics = employees.filter(e => e.role === 'Mechanic');
    const statusOptions = [
-      t('repairOrders:intake'), 
-      t('repairOrders:inspection'), 
-      t('repairOrders:awaitingApproval'), 
-      t('repairOrders:approved'), 
-      t('repairOrders:inProgress'), 
-      t('repairOrders:partsWaiting'), 
-      t('repairOrders:readyForDelivery'), 
+      t('repairOrders:intake'),
+      t('repairOrders:inspection'),
+      t('repairOrders:awaitingApproval'),
+      t('repairOrders:approved'),
+      t('repairOrders:inProgress'),
+      t('repairOrders:partsWaiting'),
+      t('repairOrders:readyForDelivery'),
       t('repairOrders:completed')
    ];
 
@@ -64,7 +64,7 @@ const RepairOrderDetail = () => {
                         </div>
                         <div className="max-h-64 overflow-y-auto">
                            {statusOptions.map(status => (
-                              <button 
+                              <button
                                  key={status}
                                  onClick={() => handleStatusChange(status)}
                                  className={`w-full text-left px-4 py-2.5 text-xs transition-smooth ${currentOrder.status === status ? 'text-primary bg-primary/5 font-bold' : 'text-muted hover:text-white hover:bg-white/5'}`}
@@ -150,7 +150,7 @@ const RepairOrderDetail = () => {
                                        </div>
                                        <div className="max-h-48 overflow-y-auto">
                                           {mechanics.map(m => (
-                                             <button 
+                                             <button
                                                 key={m.id}
                                                 onClick={() => handleMechanicChange(m.id)}
                                                 className={`w-full flex items-center gap-3 px-3 py-2 text-xs transition-smooth ${currentOrder.mechanicId === m.id ? 'text-primary bg-primary/5 font-bold' : 'text-muted hover:text-white hover:bg-white/5'}`}
@@ -228,8 +228,8 @@ const RepairOrderDetail = () => {
                                  <tr key={p.id} className="text-sm">
                                     <td className="p-4 text-white font-medium">{p.name}</td>
                                     <td className="p-4 text-muted">{p.qty}</td>
-                                    <td className="p-4 text-muted">₹{p.unitPrice}</td>
-                                    <td className="p-4 text-right text-white font-bold">₹{p.total}</td>
+                                    <td className="p-4 text-muted">${p.unitPrice}</td>
+                                    <td className="p-4 text-right text-white font-bold">${p.total}</td>
                                  </tr>
                               ))}
                            </tbody>
@@ -252,8 +252,8 @@ const RepairOrderDetail = () => {
                                  <tr key={l.id} className="text-sm">
                                     <td className="p-4 text-white font-medium">{l.description}</td>
                                     <td className="p-4 text-muted">{l.hours}</td>
-                                    <td className="p-4 text-muted">₹{l.rate}</td>
-                                    <td className="p-4 text-right text-white font-bold">₹{l.total}</td>
+                                    <td className="p-4 text-muted">${l.rate}</td>
+                                    <td className="p-4 text-right text-white font-bold">${l.total}</td>
                                  </tr>
                               ))}
                            </tbody>
@@ -262,12 +262,11 @@ const RepairOrderDetail = () => {
 
                      <div className="flex justify-end">
                         <div className="w-72 surface-card p-6 space-y-3">
-                           <div className="flex justify-between text-sm"><span className="text-muted">{t('repairOrders:subtotal')}</span><span className="text-white font-bold">₹4,650</span></div>
-                           <div className="flex justify-between text-sm"><span className="text-muted">{t('repairOrders:gst')}</span><span className="text-white font-bold">₹837</span></div>
-                           <div className="flex justify-between text-sm"><span className="text-success">{t('repairOrders:discount')}</span><span className="text-success font-bold">-₹150</span></div>
+                           <div className="flex justify-between text-sm"><span className="text-muted">{t('repairOrders:subtotal')}</span><span className="text-white font-bold">$4,650</span></div>
+                           <div className="flex justify-between text-sm"><span className="text-success">{t('repairOrders:discount')}</span><span className="text-success font-bold">-$150</span></div>
                            <div className="flex justify-between text-lg font-bold border-t border-border pt-3 mt-3">
                               <span className="text-white">{t('repairOrders:total')}</span>
-                              <span className="text-primary font-black">₹5,337</span>
+                              <span className="text-primary font-black">$5,337</span>
                            </div>
                         </div>
                      </div>

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { 
   Users, UserCheck, UserMinus, Wrench, 
   Search, Plus, Eye, Edit2, Calendar, 
-  X, Check
+  X, Check, Trash2
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Badge } from '@/components/shared/Badge';
@@ -27,6 +27,7 @@ const EmployeeList = () => {
     phone: '',
     email: '',
     role: 'Mechanic',
+    password: '',
     address: '',
     skills: '',
     documents: []
@@ -70,6 +71,7 @@ const EmployeeList = () => {
         phone: emp.phone,
         email: emp.email || '',
         role: emp.role,
+        password: '',
         address: emp.address || '',
         skills: emp.skills.join(', '),
         documents: emp.documents || []
@@ -80,7 +82,8 @@ const EmployeeList = () => {
         name: '',
         phone: '',
         email: '',
-        role: t('hr:mechanic'),
+        role: 'Mechanic',
+        password: '',
         address: '',
         skills: '',
         documents: []
@@ -113,6 +116,12 @@ const EmployeeList = () => {
     setIsModalOpen(false);
     setShowSuccessToast(true);
     setTimeout(() => setShowSuccessToast(false), 3000);
+  };
+
+  const handleDeleteEmployee = (id) => {
+    if (window.confirm(t('common:confirmDelete') || "Are you sure you want to delete this employee?")) {
+      setEmployeeList(employeeList.filter(emp => emp.id !== id));
+    }
   };
 
   const exportColumns = [
@@ -207,16 +216,23 @@ const EmployeeList = () => {
                           <button 
                             className="p-1.5 text-muted hover:text-primary transition-smooth" 
                             title={t('hr:viewProfile')}
-                            onClick={() => navigate(`/hr/employees/${emp.id}`)}
+                            onClick={(e) => { e.stopPropagation(); navigate(`/hr/employees/${emp.id}`); }}
                           >
                             <Eye size={16} />
                           </button>
                           <button 
                             className="p-1.5 text-muted hover:text-warning" 
                             title={t('inventory:edit')}
-                            onClick={() => handleOpenModal(emp)}
+                            onClick={(e) => { e.stopPropagation(); handleOpenModal(emp); }}
                           >
                             <Edit2 size={16} />
+                          </button>
+                          <button 
+                            className="p-1.5 text-muted hover:text-red-500 transition-smooth" 
+                            title={t('common:delete') || "Delete"}
+                            onClick={(e) => { e.stopPropagation(); handleDeleteEmployee(emp.id); }}
+                          >
+                            <Trash2 size={16} />
                           </button>
                        </div>
                     </td>
@@ -296,10 +312,25 @@ const EmployeeList = () => {
                     value={formData.role}
                     onChange={(e) => setFormData({...formData, role: e.target.value})}
                   >
-                    <option value={t('hr:mechanic')}>{t('hr:mechanic')}</option>
-                    <option value={t('hr:manager')}>{t('hr:manager')}</option>
-                    <option value={t('hr:receptionist')}>{t('hr:receptionist')}</option>
+                    <option value="Mechanic">{t('hr:mechanic')}</option>
+                    <option value="Manager">{t('hr:manager')}</option>
+                    <option value="Receptionist">{t('hr:receptionist')}</option>
                   </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-muted uppercase tracking-widest">{editingEmployee ? t('hr:changePassword') || "Change Password" : t('hr:password') || "Password"}</label>
+                  <input 
+                    type="password" 
+                    className="w-full bg-surface border border-border rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-primary transition-smooth" 
+                    placeholder="••••••••" 
+                    value={formData.password}
+                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    required={!editingEmployee}
+                  />
+                  {editingEmployee && <p className="text-[10px] text-muted italic">Leave blank to keep current password</p>}
                 </div>
               </div>
 
@@ -354,36 +385,6 @@ const EmployeeList = () => {
                       <div className="border border-dashed border-border p-3 rounded-lg flex items-center justify-center gap-2 group-hover:border-primary/50 transition-smooth">
                         <Plus size={14} className="text-primary" />
                         <span className="text-[10px] text-muted group-hover:text-white">{t('hr:uploadPan')}</span>
-                      </div>
-                      <input type="file" className="hidden" />
-                    </label>
-                  </div>
-
-                  {/* ITI Certification */}
-                  <div className="p-4 border border-border rounded-xl bg-white/5 space-y-2 group hover:border-primary transition-smooth">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white">{t('hr:itiCertification')}</span>
-                      <X size={14} className="text-muted cursor-pointer hover:text-red-500" />
-                    </div>
-                    <label className="block w-full cursor-pointer">
-                      <div className="border border-dashed border-border p-3 rounded-lg flex items-center justify-center gap-2 group-hover:border-primary/50 transition-smooth">
-                        <Plus size={14} className="text-primary" />
-                        <span className="text-[10px] text-muted group-hover:text-white">{t('hr:uploadCertificate')}</span>
-                      </div>
-                      <input type="file" className="hidden" />
-                    </label>
-                  </div>
-
-                  {/* Driving License */}
-                  <div className="p-4 border border-border rounded-xl bg-white/5 space-y-2 group hover:border-primary transition-smooth">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white">{t('hr:drivingLicense')}</span>
-                      <X size={14} className="text-muted cursor-pointer hover:text-red-500" />
-                    </div>
-                    <label className="block w-full cursor-pointer">
-                      <div className="border border-dashed border-border p-3 rounded-lg flex items-center justify-center gap-2 group-hover:border-primary/50 transition-smooth">
-                        <Plus size={14} className="text-primary" />
-                        <span className="text-[10px] text-muted group-hover:text-white">{t('hr:uploadDl')}</span>
                       </div>
                       <input type="file" className="hidden" />
                     </label>

@@ -1,0 +1,212 @@
+// GMS — Garage Management System
+// Prisma Schema — Phase 1 (Tenant Onboarding Flow)
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum PlanType {
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum PlanInterval {
+  MONTHLY
+  YEARLY
+}
+
+enum TenantStatus {
+  PENDING_VERIFICATION
+  ACTIVE
+  REJECTED
+  RESUBMITTED
+  SUSPENDED
+  BLOCKED
+}
+
+enum PaymentStatus {
+  PENDING
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum ServiceType {
+  REPAIR
+  PAINT
+  ELECTRICAL
+  FULL_SERVICE
+  TYRE_WHEEL
+  AC_SERVICE
+  BODY_WORK
+  INSPECTION
+  PERIODIC_MAINTENANCE
+}
+
+enum SuperAdminRole {
+  SUPER_ADMIN
+  SUPPORT_MANAGER
+  BILLING_ADMIN
+  TECHNICAL_ADMIN
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUPER ADMIN
+// ─────────────────────────────────────────────────────────────────────────────
+
+model SuperAdmin {
+  id          String         @id @default(cuid())
+  name        String
+  email       String         @unique
+  password    String
+  role        SuperAdminRole @default(SUPPORT_MANAGER)
+  phone       String?
+  avatar      String?
+  isActive    Boolean        @default(true)
+  lastLoginAt DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  verifiedTenants Tenant[] @relation("VerifiedBy")
+
+  @@map("super_admins")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUBSCRIPTION PLANS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model SubscriptionPlan {
+  id            String   @id @default(cuid())
+  name          String
+  type          PlanType @unique
+  monthlyPrice  Decimal  @db.Decimal(10, 2)
+  yearlyPrice   Decimal  @db.Decimal(10, 2)
+  maxStaffUsers Int
+  maxVehicles   Int
+  maxJobCards   Int?
+
+  // Module access
+  hasRepairOrders    Boolean @default(true)
+  hasDiagnostics     Boolean @default(false)
+  hasFleetManagement Boolean @default(false)
+  hasHrManagement    Boolean @default(true)
+  hasCrm             Boolean @default(true)
+  hasPartsSourcing   Boolean @default(false)
+  hasReports         Boolean @default(true)
+
+  // Notification channels
+  hasSms      Boolean @default(false)
+  hasWhatsapp Boolean @default(false)
+  hasEmail    Boolean @default(true)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subscriptions TenantSubscription[]
+
+  @@map("subscription_plans")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TENANT
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Tenant {
+  id     String       @id @default(cuid())
+  status TenantStatus @default(PENDING_VERIFICATION)
+
+  // Basic info (Step 1)
+  ownerName String
+  email     String  @unique
+  phone     String
+  password  String
+
+  // Email OTP
+  isEmailVerified Boolean   @default(false)
+  emailOtp        String?
+  emailOtpExpiry  DateTime?
+
+  // Garage details (Step 3)
+  garageName       String?
+  garageAddress    String?
+  city             String?
+  country          String?      @default("UAE")
+  numberOfBranches Int?         @default(1)
+  serviceTypes     ServiceType[]
+  garagePhone      String?
+  garageEmail      String?
+
+  // Tax / Billing (Step 3)
+  trnNumber          String?
+  companyBillingName String?
+  billingAddress     String?
+
+  // Documents — S3 or local URLs (Step 3)
+  tradeLicenseFrontUrl String?
+  tradeLicenseBackUrl  String?
+  ownerIdFrontUrl      String?
+  ownerIdBackUrl       String?
+  vatCertificateUrl    String?
+
+  // Verification
+  rejectionReason String?
+  verifiedById    String?
+  verifiedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  verifiedBy    SuperAdmin?          @relation("VerifiedBy", fields: [verifiedById], references: [id])
+  subscriptions TenantSubscription[]
+
+  @@map("tenants")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TENANT SUBSCRIPTION
+// ─────────────────────────────────────────────────────────────────────────────
+
+model TenantSubscription {
+  id       String        @id @default(cuid())
+  tenantId String
+  planId   String
+  interval PlanInterval  @default(MONTHLY)
+  amount   Decimal       @db.Decimal(10, 2)
+  status   PaymentStatus @default(PENDING)
+  isActive Boolean       @default(false)
+
+  // Razorpay
+  razorpayOrderId   String? @unique
+  razorpayPaymentId String? @unique
+  razorpaySignature String?
+
+  // Validity
+  startDate DateTime?
+  endDate   DateTime?
+
+  // Refund
+  refundedAt   DateTime?
+  refundAmount Decimal?  @db.Decimal(10, 2)
+  refundReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  plan   SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  @@map("tenant_subscriptions")
+}

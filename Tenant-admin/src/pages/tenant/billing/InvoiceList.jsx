@@ -57,7 +57,7 @@ const InvoiceList = () => {
     { header: 'Invoice#', accessor: 'invoiceNo' },
     { header: 'Customer', accessor: 'customer' },
     { header: 'Vehicle', accessor: 'vehicle' },
-    { header: 'Total', accessor: (item) => `₹${item.total}` },
+    { header: 'Total', accessor: (item) => `$${item.total}` },
     { header: 'Date', accessor: 'date' },
     { header: 'Status', accessor: 'status' },
   ];
@@ -77,9 +77,9 @@ const InvoiceList = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <StatCard title={t('billing:totalInvoices')} value="1,240" icon={CreditCard} color="blue" />
-        <StatCard title={t('billing:paid')} value="₹12.4L" icon={CheckCircle} color="green" />
-        <StatCard title={t('billing:pending')} value="₹2.1L" icon={Clock} color="amber" />
-        <StatCard title={t('billing:overdue')} value="₹45K" icon={AlertTriangle} color="red" />
+        <StatCard title={t('billing:paid')} value="$12.4L" icon={CheckCircle} color="green" />
+        <StatCard title={t('billing:pending')} value="$2.1L" icon={Clock} color="amber" />
+        <StatCard title={t('billing:overdue')} value="$45K" icon={AlertTriangle} color="red" />
       </div>
 
       <div className="surface-card">
@@ -110,8 +110,6 @@ const InvoiceList = () => {
                 <th className="p-4">Invoice#</th>
                 <th className="p-4">Customer</th>
                 <th className="p-4">Amount</th>
-                <th className="p-4">GST</th>
-                <th className="p-4">Total</th>
                 <th className="p-4">Date</th>
                 <th className="p-4">Status</th>
                 <th className="p-4 text-right">Actions</th>
@@ -125,9 +123,7 @@ const InvoiceList = () => {
                     <p className="text-white font-bold text-sm">{inv.customer}</p>
                     <p className="text-[10px] text-muted uppercase">{inv.vehicle}</p>
                   </td>
-                  <td className="p-4 text-white text-sm">₹{inv.amount.toLocaleString()}</td>
-                  <td className="p-4 text-muted text-xs">₹{inv.gst.toLocaleString()}</td>
-                  <td className="p-4 text-white font-bold text-sm">₹{inv.total.toLocaleString()}</td>
+                  <td className="p-4 text-white font-bold text-sm">${inv.total.toLocaleString()}</td>
                   <td className="p-4 text-muted text-xs">{inv.date}</td>
                   <td className="p-4">
                     <Badge variant={inv.status === 'Paid' ? 'success' : 'warning'}>{inv.status}</Badge>

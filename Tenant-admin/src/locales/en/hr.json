@@ -20,8 +20,8 @@
   "email": "Email",
   "address": "Address",
   "documents": "Documents",
-  "aadhaarCard": "Aadhaar Card",
-  "panCard": "PAN Card",
+  "aadhaarCard": "Owner ID",
+  "panCard": "Passport",
   "itiCertification": "ITI Certification",
   "drivingLicense": "Driving License",
   "confirmCreate": "Confirm & Create",
@@ -48,8 +48,8 @@
   "skillsHelp": "(Comma separated)",
   "skillsPlaceholder": "Engine, Suspension, Electrical, etc.",
   "requiredProofs": "Documents (Required Proofs)",
-  "uploadAadhaar": "Upload Aadhaar",
-  "uploadPan": "Upload PAN",
+  "uploadAadhaar": "Upload ID",
+  "uploadPan": "Upload Passport",
   "uploadCertificate": "Upload Certificate",
   "uploadDl": "Upload DL",
   "viewProfile": "View Profile",
@@ -63,5 +63,7 @@
   "topTechnicianText": "Rajesh is currently in the top 10% of technicians this month based on job completion time.",
   "potentialBonus": "Potential Bonus",
   "namePlaceholder": "Ex: Rajesh Sharma",
-  "phonePlaceholder": "+91-XXXXX-XXXXX"
+  "phonePlaceholder": "+91-XXXXX-XXXXX",
+  "changePassword": "Change Password",
+  "password": "Password"
 }

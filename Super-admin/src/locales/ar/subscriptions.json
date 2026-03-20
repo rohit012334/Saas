@@ -10,11 +10,13 @@
   "addPlanNotice": "أضف باقة لنوع السيارة هذا من الزر أعلاه.",
   "filterAll": "جميع السيارات",
   "vehicleTypes": {
-    "2 Wheelers": "عجلتان",
-    "4 Wheelers": "4 عجلات",
-    "Both": "كلاهما",
-    "4 Wheeler + Heavy Vehicle": "4 عجلات + مركبة ثقيلة"
+    "Motorcycles": "دراجات نارية",
+    "Car": "سيارة",
+    "Truck": "شاحنة",
+    "Bus": "حافلة",
+    "Heavy Equipments": "معدات ثقيلة"
   },
+  "3 Months": "كل 3 أشهر",
   "monthly": "شهريًا",
   "yearly": "سنويًا",
   "savePercent": "توفير",

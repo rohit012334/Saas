@@ -1,6 +1,7 @@
 {
   "language": { "english": "English", "arabic": "Arabic", "toggleLabel": "Language" },
   "monthly": "Monthly",
+  "threeMonths": "3 Months",
   "yearly": "Yearly",
   "tableView": "Table View",
   "cardView": "Card View",

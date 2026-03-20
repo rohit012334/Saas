@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Package, AlertCircle, ShoppingCart, IndianRupee, 
+import {
+  Package, AlertCircle, ShoppingCart, DollarSign,
   Search, Plus, Edit2, RotateCcw, History, X, Trash2, Tag, Layers, BarChart3
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/PageHeader';
@@ -29,11 +29,11 @@ const InventoryList = () => {
 
   const filteredParts = useMemo(() => {
     return partsList.filter(part => {
-      const matchesSearch = 
+      const matchesSearch =
         part.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         part.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
         part.category.toLowerCase().includes(searchQuery.toLowerCase());
-      
+
       if (!matchesSearch) return false;
 
       if (dateFilter === 'all') return true;
@@ -89,23 +89,23 @@ const InventoryList = () => {
     { header: t('inventory:sku'), accessor: 'sku' },
     { header: t('inventory:category'), accessor: 'category' },
     { header: t('inventory:stock'), accessor: 'stock' },
-    { header: t('inventory:unitPrice'), accessor: (item) => `₹${item.unitPrice}` },
+    { header: t('inventory:unitPrice'), accessor: (item) => `$${item.unitPrice}` },
   ];
 
   const stats = [
     { title: t('inventory:totalParts'), value: partsList.length.toString(), icon: Package, color: 'blue' },
     { title: t('inventory:lowStock'), value: partsList.filter(p => p.stock > 0 && p.stock < p.minStock).length.toString(), icon: AlertCircle, color: 'amber' },
     { title: t('inventory:outOfStock'), value: partsList.filter(p => p.stock === 0).length.toString(), icon: ShoppingCart, color: 'red' },
-    { title: t('inventory:totalValue'), value: `₹${(partsList.reduce((acc, p) => acc + (p.stock * p.unitPrice), 0) / 100000).toFixed(1)}L`, icon: IndianRupee, color: 'green' },
+    { title: t('inventory:totalValue'), value: `$${(partsList.reduce((acc, p) => acc + (p.stock * p.unitPrice), 0) / 100000).toFixed(1)}L`, icon: DollarSign, color: 'green' },
   ];
 
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title={t('sidebar:inventory')} 
+      <PageHeader
+        title={t('sidebar:inventory')}
         breadcrumbs={['GMS', t('sidebar:inventory')]}
         actions={
-          <button 
+          <button
             onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-smooth font-bold text-sm shadow-lg shadow-primary/20"
           >
@@ -123,23 +123,23 @@ const InventoryList = () => {
 
       <div className="surface-card">
         <div className="p-4 border-b border-border flex flex-col md:flex-row items-center justify-between gap-4">
-           <div className="flex items-center gap-3">
-             <div className="relative">
-               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
-               <input 
-                 placeholder={t('inventory:searchPlaceholder')} 
-                 value={searchQuery}
-                 onChange={(e) => setSearchQuery(e.target.value)}
-                 className="bg-surface border border-border rounded-xl pl-10 pr-4 py-2 text-sm w-64 outline-none focus:border-primary transition-smooth" 
-               />
-             </div>
-             <DateFilter onFilterChange={setDateFilter} />
-             <ExportButton 
-               data={filteredParts} 
-               filename="inventory" 
-               columns={exportColumns} 
-             />
-           </div>
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" size={16} />
+              <input
+                placeholder={t('inventory:searchPlaceholder')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-surface border border-border rounded-xl pl-10 pr-4 py-2 text-sm w-64 outline-none focus:border-primary transition-smooth"
+              />
+            </div>
+            <DateFilter onFilterChange={setDateFilter} />
+            <ExportButton
+              data={filteredParts}
+              filename="inventory"
+              columns={exportColumns}
+            />
+          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -166,16 +166,16 @@ const InventoryList = () => {
                   <td className="p-4 text-muted font-mono text-xs">{part.sku}</td>
                   <td className="p-4 text-white text-sm">{part.category}</td>
                   <td className="p-4">
-                     <span className={`text-sm font-bold ${part.stock < part.minStock ? 'text-destructive' : 'text-white'}`}>
-                        {part.stock}
-                     </span>
+                    <span className={`text-sm font-bold ${part.stock < part.minStock ? 'text-destructive' : 'text-white'}`}>
+                      {part.stock}
+                    </span>
                   </td>
                   <td className="p-4 text-muted text-sm">{part.minStock}</td>
-                  <td className="p-4 text-white font-bold text-sm">₹{part.unitPrice}</td>
+                  <td className="p-4 text-white font-bold text-sm">${part.unitPrice}</td>
                   <td className="p-4">
-                     <Badge variant={part.stock === 0 ? 'danger' : part.stock < part.minStock ? 'warning' : 'success'}>
-                        {part.stock === 0 ? t('inventory:outOfStockLabel') : part.stock < part.minStock ? t('inventory:lowStockLabel') : t('inventory:inStock')}
-                     </Badge>
+                    <Badge variant={part.stock === 0 ? 'danger' : part.stock < part.minStock ? 'warning' : 'success'}>
+                      {part.stock === 0 ? t('inventory:outOfStockLabel') : part.stock < part.minStock ? t('inventory:lowStockLabel') : t('inventory:inStock')}
+                    </Badge>
                   </td>
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-2 transition-smooth">
@@ -217,11 +217,11 @@ const InventoryList = () => {
                 <label className="text-xs font-bold text-muted uppercase tracking-wider flex items-center gap-2">
                   <Tag size={12} className="text-primary" /> {t('inventory:partName')}
                 </label>
-                <input 
+                <input
                   required
                   placeholder={t('inventory:partNamePlaceholder')}
                   value={newPart.name}
-                  onChange={(e) => setNewPart({...newPart, name: e.target.value})}
+                  onChange={(e) => setNewPart({ ...newPart, name: e.target.value })}
                   className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-primary outline-none transition-smooth"
                 />
               </div>
@@ -231,9 +231,9 @@ const InventoryList = () => {
                   <label className="text-xs font-bold text-muted uppercase tracking-wider flex items-center gap-2">
                     <Layers size={12} className="text-primary" /> {t('inventory:category')}
                   </label>
-                  <select 
+                  <select
                     value={newPart.category}
-                    onChange={(e) => setNewPart({...newPart, category: e.target.value})}
+                    onChange={(e) => setNewPart({ ...newPart, category: e.target.value })}
                     className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-primary outline-none transition-smooth appearance-none"
                   >
                     <option value={t('inventory:engineParts')}>{t('inventory:engineParts')}</option>
@@ -245,14 +245,14 @@ const InventoryList = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-muted uppercase tracking-wider flex items-center gap-2">
-                    <IndianRupee size={12} className="text-primary" /> {t('inventory:unitPrice')}
+                    <DollarSign size={12} className="text-primary" /> {t('inventory:unitPrice')}
                   </label>
-                  <input 
+                  <input
                     required
                     type="number"
                     placeholder="2500"
                     value={newPart.unitPrice}
-                    onChange={(e) => setNewPart({...newPart, unitPrice: e.target.value})}
+                    onChange={(e) => setNewPart({ ...newPart, unitPrice: e.target.value })}
                     className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-primary outline-none transition-smooth"
                   />
                 </div>
@@ -263,12 +263,12 @@ const InventoryList = () => {
                   <label className="text-xs font-bold text-muted uppercase tracking-wider flex items-center gap-2">
                     <BarChart3 size={12} className="text-primary" /> {t('inventory:initialStock')}
                   </label>
-                  <input 
+                  <input
                     required
                     type="number"
                     placeholder="20"
                     value={newPart.stock}
-                    onChange={(e) => setNewPart({...newPart, stock: e.target.value})}
+                    onChange={(e) => setNewPart({ ...newPart, stock: e.target.value })}
                     className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-primary outline-none transition-smooth"
                   />
                 </div>
@@ -276,26 +276,26 @@ const InventoryList = () => {
                   <label className="text-xs font-bold text-muted uppercase tracking-wider flex items-center gap-2">
                     <AlertCircle size={12} className="text-primary" /> {t('inventory:minStockAlert')}
                   </label>
-                  <input 
+                  <input
                     required
                     type="number"
                     placeholder="5"
                     value={newPart.minStock}
-                    onChange={(e) => setNewPart({...newPart, minStock: e.target.value})}
+                    onChange={(e) => setNewPart({ ...newPart, minStock: e.target.value })}
                     className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-primary outline-none transition-smooth"
                   />
                 </div>
               </div>
 
               <div className="flex items-center gap-3 pt-4">
-                <button 
+                <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
                   className="flex-1 px-6 py-3 border border-border text-muted hover:text-white hover:bg-white/5 rounded-xl text-sm font-bold transition-smooth uppercase tracking-widest"
                 >
                   {t('common:cancel')}
                 </button>
-                <button 
+                <button
                   type="submit"
                   className="flex-1 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-smooth text-sm font-bold shadow-xl shadow-primary/20 uppercase tracking-widest"
                 >

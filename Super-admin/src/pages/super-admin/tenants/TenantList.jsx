@@ -52,13 +52,13 @@ export function TenantList() {
     }
     if (planFilter) data = data.filter((r) => r.plan === planFilter)
     if (statusFilter) data = data.filter((r) => r.status === statusFilter)
-    
+
     if (timeFilter !== 'all') {
       const now = new Date('2026-03-11')
       data = data.filter((r) => {
         const joined = new Date(r.joinedDate)
         const diffDays = (now - joined) / (1000 * 60 * 60 * 24)
-        
+
         if (timeFilter === 'today') return diffDays < 1 && joined.getDate() === now.getDate()
         if (timeFilter === 'yesterday') {
           const yesterday = new Date(now)
@@ -89,7 +89,7 @@ export function TenantList() {
         id: 'mrr',
         header: t('table.mrr'),
         accessorKey: 'mrr',
-        cell: ({ getValue }) => `₹${Number(getValue()).toLocaleString()}`,
+        cell: ({ getValue }) => `$${Number(getValue()).toLocaleString()}`,
       },
       { id: 'staffCount', header: t('table.staffCount'), accessorKey: 'staffCount', cell: ({ getValue }) => getValue() },
       { id: 'joinedDate', header: t('table.joinedDate'), accessorKey: 'joinedDate', cell: ({ getValue }) => getValue() },
@@ -192,9 +192,9 @@ export function TenantList() {
               <Button variant="outline" className="gap-2 h-9 px-3">
                 <Filter className="h-4 w-4" />
                 <span className="text-sm font-medium">
-                  {timeFilter === 'all' ? 'All Time' : 
-                   timeFilter === 'today' ? 'Today' : 
-                   timeFilter === 'yesterday' ? 'Yesterday' : 'Last 7 Days'}
+                  {timeFilter === 'all' ? 'All Time' :
+                    timeFilter === 'today' ? 'Today' :
+                      timeFilter === 'yesterday' ? 'Yesterday' : 'Last 7 Days'}
                 </span>
               </Button>
             </DropdownMenuTrigger>
@@ -218,24 +218,24 @@ export function TenantList() {
         open={confirm.open}
         title={
           confirm.type === 'delete' ? tCommon('deleteConfirm', { name: confirm.row?.name }) :
-          confirm.type === 'block' ? 'Block Tenant' :
-          confirm.type === 'activate' ? 'Activate Tenant' :
-          t('actionSuspend')
+            confirm.type === 'block' ? 'Block Tenant' :
+              confirm.type === 'activate' ? 'Activate Tenant' :
+                t('actionSuspend')
         }
         message={tCommon('deleteConfirmMessage')}
         danger={confirm.type === 'delete' || confirm.type === 'block'}
         confirmLabel={
           confirm.type === 'delete' ? tCommon('delete') :
-          confirm.type === 'block' ? 'Block' :
-          confirm.type === 'activate' ? 'Activate' :
-          tCommon('confirm')
+            confirm.type === 'block' ? 'Block' :
+              confirm.type === 'activate' ? 'Activate' :
+                tCommon('confirm')
         }
         onConfirm={() => {
           toast.success(
             confirm.type === 'delete' ? 'Deleted' :
-            confirm.type === 'block' ? 'Blocked' :
-            confirm.type === 'activate' ? 'Activated' :
-            'Suspended'
+              confirm.type === 'block' ? 'Blocked' :
+                confirm.type === 'activate' ? 'Activated' :
+                  'Suspended'
           )
           setConfirm({ open: false, type: null, row: null })
         }}
@@ -285,13 +285,12 @@ function DocumentsModal({ open, tenant, onClose }) {
 
   const garageDocs = [
     { name: 'Trade License', status: 'Verified', date: '2024-01-15' },
-    { name: 'GST / Tax Certificate', status: 'Verified', date: '2024-01-15' },
     { name: 'Rent Agreement', status: 'Pending', date: '2024-03-01' },
     { name: 'Workshop Photos', status: 'Verified', date: '2024-02-10' },
   ]
 
   const ownerDocs = [
-    { name: 'Identity Proof (Aadhaar/PAN)', status: 'Verified', date: '2024-01-15' },
+    { name: 'Identity Proof (Owner ID/Passport)', status: 'Verified', date: '2024-01-15' },
     { name: 'Address Proof', status: 'Verified', date: '2024-01-15' },
     { name: 'Owner Photo', status: 'Verified', date: '2024-01-15' },
   ]

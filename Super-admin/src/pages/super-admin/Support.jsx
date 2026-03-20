@@ -117,6 +117,68 @@ export function Support() {
     <div className="space-y-6 animate-in">
       <PageHeader title={t('title')} />
 
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in duration-500 delay-150">
+        <Card className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-orange-100/50 bg-gradient-to-br from-orange-50/30 to-background">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <Clock className="w-20 h-20 text-orange-600" />
+          </div>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-orange-100 text-orange-600 shadow-sm group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                <Clock className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t('status.Pending')}</p>
+                <div className="flex items-baseline gap-1">
+                  <h3 className="text-3xl font-bold tracking-tight text-orange-700">{tickets.filter(t => t.status === 'Pending').length}</h3>
+                  <span className="text-xs text-orange-600/60 font-medium">Tickets</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-emerald-100/50 bg-gradient-to-br from-emerald-50/30 to-background">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <CheckCircle className="w-20 h-20 text-emerald-600" />
+          </div>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-emerald-100 text-emerald-600 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                <CheckCircle className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t('status.Solved')}</p>
+                <div className="flex items-baseline gap-1">
+                  <h3 className="text-3xl font-bold tracking-tight text-emerald-700">{tickets.filter(t => t.status === 'Solved').length}</h3>
+                  <span className="text-xs text-emerald-600/60 font-medium">Tickets</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-blue-100/50 bg-gradient-to-br from-blue-50/30 to-background">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <MessageSquare className="w-20 h-20 text-blue-600" />
+          </div>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-blue-100 text-blue-600 shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                <MessageSquare className="w-6 h-6" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t('status.Enquiry')}</p>
+                <div className="flex items-baseline gap-1">
+                  <h3 className="text-3xl font-bold tracking-tight text-blue-700">{tickets.filter(t => t.status === 'Enquiry').length}</h3>
+                  <span className="text-xs text-blue-600/60 font-medium">Tickets</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <Card>
         <CardContent className="flex items-center gap-3 pt-6">
           <div className="relative flex-1 max-w-sm">

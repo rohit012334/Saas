@@ -26,6 +26,7 @@
     "memberSince": "Member since",
     "registeredVehicles": "Registered Vehicles Detail",
     "noVehicles": "No vehicles registered",
+    "vin": "VIN Number",
     "fullHistory": "View Full History"
   },
   "times": "Times"

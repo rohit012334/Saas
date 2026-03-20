@@ -10,11 +10,13 @@
   "addPlanNotice": "Add a plan for this vehicle type from the button above.",
   "filterAll": "All Vehicles",
   "vehicleTypes": {
-    "2 Wheelers": "2 Wheelers",
-    "4 Wheelers": "4 Wheelers",
-    "Both": "Both",
-    "4 Wheeler + Heavy Vehicle": "4 Wheeler + Heavy Vehicle"
+    "Motorcycles": "Motorcycles",
+    "Car": "Car",
+    "Truck": "Truck",
+    "Bus": "Bus",
+    "Heavy Equipments": "Heavy Equipments"
   },
+  "3 Months": "per 3 months",
   "monthly": "per month",
   "yearly": "per year",
   "savePercent": "save",

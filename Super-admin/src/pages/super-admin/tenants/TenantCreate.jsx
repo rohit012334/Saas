@@ -25,7 +25,6 @@ export function TenantCreate() {
     city: '',
     country: '',
     address: '',
-    gstNumber: '',
     plan: '',
     trialDays: '14',
     sendWelcomeEmail: false,
@@ -54,7 +53,6 @@ export function TenantCreate() {
           city: t.city,
           country: t.country,
           address: t.address || '',
-          gstNumber: t.gstNumber || '',
           plan: t.plan,
           trialDays: '14',
           sendWelcomeEmail: false,
@@ -170,15 +168,6 @@ export function TenantCreate() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>{t('form.gstNumber')}</Label>
-                <Input
-                  value={form.gstNumber}
-                  onChange={(e) => setForm((f) => ({ ...f, gstNumber: e.target.value }))}
-                  placeholder={t('form.gstNumberPlaceholder')}
-                  className={inputClass}
-                />
-              </div>
-              <div className="space-y-2">
                 <Label>{t('form.subscriptionPlan')} *</Label>
                 <select
                   value={form.plan}
@@ -232,10 +221,6 @@ export function TenantCreate() {
                   <DocumentUpload 
                     label={t('form.tradeLicense')} 
                     onChange={(file) => setForm(f => ({ ...f, tradeLicense: file }))} 
-                  />
-                  <DocumentUpload 
-                    label={t('form.gstCertificate')} 
-                    onChange={(file) => setForm(f => ({ ...f, gstCertificate: file }))} 
                   />
                   <DocumentUpload 
                     label={t('form.rentAgreement')} 

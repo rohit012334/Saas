@@ -28,8 +28,8 @@ const Sidebar = () => {
     { icon: Users2, label: t('sidebar:hrManagement'), path: '/hr', roles: ['Tenant Admin', 'Manager'] },
     {icon: Users, label: t('sidebar:customers'), path: '/customers', roles: ['All'] },
     { icon: Wrench, label: t('sidebar:services'), path: '/services', roles: ['Tenant Admin', 'Manager'] },
-    // { icon: CreditCard, label: t('sidebar:billing'), path: '/billing', roles: ['Tenant Admin', 'Manager'] },
     { icon: PieChart, label: t('sidebar:reports'), path: '/reports', roles: ['Tenant Admin', 'Manager'] },
+    { icon: CreditCard, label: t('sidebar:subscriptionHistory'), path: '/billing/subscription-history', roles: ['Tenant Admin'] },
     { icon: Settings, label: t('sidebar:settings'), path: '/settings', roles: ['Tenant Admin'] },
   ];
 

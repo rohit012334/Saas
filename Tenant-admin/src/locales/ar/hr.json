@@ -20,8 +20,8 @@
   "email": "البريد الإلكتروني",
   "address": "العنوان",
   "documents": "المستندات",
-  "aadhaarCard": "بطاقة آدهار",
-  "panCard": "بطاقة PAN",
+  "aadhaarCard": "هوية المالك",
+  "panCard": "جواز السفر",
   "itiCertification": "شهادة ITI",
   "drivingLicense": "رخصة القيادة",
   "confirmCreate": "تأكيد وإنشاء",
@@ -48,8 +48,8 @@
   "skillsHelp": "(مفصولة بفاصلة)",
   "skillsPlaceholder": "محرك، نظام تعليق، كهرباء، إلخ.",
   "requiredProofs": "المستندات (البراهين المطلوبة)",
-  "uploadAadhaar": "رفع بطاقة الهوية",
-  "uploadPan": "رفع البطاقة الضريبية",
+  "uploadAadhaar": "رفع الهوية",
+  "uploadPan": "رفع جواز السفر",
   "uploadCertificate": "رفع الشهادة",
   "uploadDl": "رفع رخصة القيادة",
   "viewProfile": "عرض الملف الشخصي",
@@ -63,5 +63,7 @@
   "topTechnicianText": "راجيش هو حالياً من بين أفضل 10٪ من الفنيين هذا الشهر بناءً على وقت إكمال المهمة.",
   "potentialBonus": "المكافأة المحتملة",
   "namePlaceholder": "مثال: راجيش شارما",
-  "phonePlaceholder": "+91-XXXXX-XXXXX"
+  "phonePlaceholder": "+91-XXXXX-XXXXX",
+  "changePassword": "تغيير كلمة المرور",
+  "password": "كلمة المرور"
 }

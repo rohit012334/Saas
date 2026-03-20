@@ -231,7 +231,7 @@ const CreateJobCard = () => {
                 <div className="col-span-6"><input placeholder={t('repairOrders:partNamePlaceholder')} className="w-full bg-transparent border-none outline-none text-sm text-white" /></div>
                 <div className="col-span-2"><input type="number" defaultValue={1} className="w-full bg-transparent border-none outline-none text-sm text-white" /></div>
                 <div className="col-span-2"><input type="number" placeholder="0.00" className="w-full bg-transparent border-none outline-none text-sm text-white" /></div>
-                <div className="col-span-1 text-sm font-bold">₹0</div>
+                <div className="col-span-1 text-sm font-bold">$0</div>
                 <div className="col-span-1 flex justify-end">
                   <button className="text-muted hover:text-danger"><Trash2 size={16} /></button>
                 </div>
@@ -253,7 +253,7 @@ const CreateJobCard = () => {
                   </select>
                 </div>
                 <div className="col-span-2"><input type="number" value={l.hours} onChange={(e) => setLabour(labour.map(item => item.id === l.id ? { ...item, hours: e.target.value, total: e.target.value * item.rate } : item))} className="w-full bg-transparent border-none outline-none text-sm text-white" /></div>
-                <div className="col-span-2 text-sm font-bold text-white">₹{l.total}</div>
+                <div className="col-span-2 text-sm font-bold text-white">${l.total}</div>
                 <div className="col-span-1 flex justify-end">
                   <button onClick={() => setLabour(labour.filter(item => item.id !== l.id))} className="text-muted hover:text-danger"><Trash2 size={16} /></button>
                 </div>
@@ -271,15 +271,11 @@ const CreateJobCard = () => {
           <div className="w-64 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted">Subtotal</span>
-              <span className="text-white font-medium">₹0.00</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted">GST (18%)</span>
-              <span className="text-white font-medium">₹0.00</span>
+              <span className="text-white font-medium">$0.00</span>
             </div>
             <div className="flex justify-between text-lg font-bold border-t border-border pt-2 mt-2">
               <span className="text-white">Estimate Total</span>
-              <span className="text-primary font-bold">₹0.00</span>
+              <span className="text-primary font-bold">$0.00</span>
             </div>
           </div>
         </div> */}

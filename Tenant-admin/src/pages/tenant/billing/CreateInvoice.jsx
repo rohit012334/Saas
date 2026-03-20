@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
    Plus, Search, User, Car,
-   Trash2, FileText, IndianRupee,
+   Trash2, FileText, DollarSign,
    Save, Printer, Send
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/PageHeader';
@@ -18,8 +18,7 @@ const CreateInvoice = () => {
    ]);
 
    const subtotal = items.reduce((acc, item) => acc + item.total, 0);
-   const gst = subtotal * 0.18;
-   const total = subtotal + gst;
+   const total = subtotal;
 
    return (
       <div className="space-y-6">
@@ -104,7 +103,7 @@ const CreateInvoice = () => {
                               <td className="p-4">
                                  <input type="number" value={item.rate} className="bg-surface border border-border rounded-lg px-2 py-1 text-xs text-white w-24" />
                               </td>
-                              <td className="p-4 text-white font-bold text-sm">₹{item.total}</td>
+                              <td className="p-4 text-white font-bold text-sm">${item.total}</td>
                               <td className="p-4 text-right">
                                  <button className="text-muted hover:text-red-500 transition-smooth"><Trash2 size={16} /></button>
                               </td>
@@ -121,19 +120,15 @@ const CreateInvoice = () => {
                   <div className="space-y-3">
                      <div className="flex justify-between text-sm text-muted">
                         <span>Subtotal</span>
-                        <span className="text-white font-bold">₹{subtotal.toLocaleString()}</span>
-                     </div>
-                     <div className="flex justify-between text-sm text-muted">
-                        <span>GST (18%)</span>
-                        <span className="text-white font-bold">₹{gst.toLocaleString()}</span>
+                        <span className="text-white font-bold">${subtotal.toLocaleString()}</span>
                      </div>
                      <div className="flex justify-between text-sm text-muted">
                         <span>Discount</span>
-                        <span className="text-success font-bold">-₹0</span>
+                        <span className="text-success font-bold">-$0</span>
                      </div>
                      <div className="flex justify-between text-xl font-black text-white pt-4 border-t border-border mt-4">
                         <span>Total Amount</span>
-                        <span className="text-primary font-black">₹{total.toLocaleString()}</span>
+                        <span className="text-primary font-black">${total.toLocaleString()}</span>
                      </div>
                   </div>
                </div>

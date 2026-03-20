@@ -65,7 +65,7 @@ export function PlatformSettings() {
               <div className="space-y-2">
                 <Label>{t('general.defaultCurrency')}</Label>
                 <select className={cn('h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring')}>
-                  <option>INR (₹)</option>
+                  <option>INR ($)</option>
                   <option>AED</option>
                   <option>SAR</option>
                   <option>USD</option>

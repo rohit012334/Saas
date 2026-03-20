@@ -82,6 +82,17 @@ export function SubscriptionPage() {
             {t('common:monthly')}
           </Button>
           <Button
+            variant={billingCycle === '3 Months' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setBillingCycle('3 Months')}
+            className={cn(
+              "rounded-xl px-8 transition-all duration-300",
+              billingCycle === '3 Months' ? "shadow-md" : "hover:bg-primary/5"
+            )}
+          >
+            {t('common:threeMonths')}
+          </Button>
+          <Button
             variant={billingCycle === 'Yearly' ? 'default' : 'ghost'}
             size="sm"
             onClick={() => setBillingCycle('Yearly')}

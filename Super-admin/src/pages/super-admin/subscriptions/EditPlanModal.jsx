@@ -12,14 +12,14 @@ import { Label } from '@/components/ui/label'
 import { FeatureInputList } from './FeatureInputList'
 import { cn } from '@/lib/utils'
 
-const VEHICLE_TYPES = ['2 Wheeler', '4 Wheeler', 'Both', '4 Wheeler + Heavy Vehicle']
-const DURATIONS = ['Monthly', 'Yearly']
+const VEHICLE_TYPES = ['Motorcycles', 'Car', 'Truck', 'Bus', 'Heavy Equipments']
+const DURATIONS = ['Monthly', '3 Months', 'Yearly']
 const STATUS_OPTIONS = ['Active', 'Inactive']
 
 export function EditPlanModal({ plan, open, onClose, onSave }) {
   const [form, setForm] = useState({
     planName: '',
-    vehicleType: '2 Wheeler',
+    vehicleType: 'Motorcycles',
     duration: 'Monthly',
     price: '',
     maxJobsPerMonth: '',
@@ -36,7 +36,7 @@ export function EditPlanModal({ plan, open, onClose, onSave }) {
     if (plan) {
       setForm({
         planName: plan.planName ?? '',
-        vehicleType: plan.vehicleType ?? '2 Wheeler',
+        vehicleType: plan.vehicleType ?? 'Motorcycles',
         duration: plan.duration ?? 'Monthly',
         price: plan.price ?? '',
         maxJobsPerMonth: plan.maxJobsPerMonth ?? '',
@@ -129,7 +129,7 @@ export function EditPlanModal({ plan, open, onClose, onSave }) {
               </select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-price">Price (₹)</Label>
+              <Label htmlFor="edit-price">Price ($)</Label>
               <Input
                 id="edit-price"
                 type="number"

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-   Plus, Search, Filter, IndianRupee,
+   Plus, Search, Filter, DollarSign,
    TrendingUp, TrendingDown, ShoppingCart,
    Wrench, Home, Briefcase, Eye, Download
 } from 'lucide-react';
@@ -32,10 +32,10 @@ const Expenses = () => {
       /> */}
 
          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <StatCard title="This Month" value="₹45,200" icon={TrendingUp} color="red" />
-            <StatCard title="Inventory Cost" value="₹28,500" icon={ShoppingCart} color="blue" />
-            <StatCard title="Operating Costs" value="₹12,400" icon={Home} color="purple" />
-            <StatCard title="Net Profit (Est)" value="₹1.8L" icon={TrendingUp} color="green" />
+            <StatCard title="This Month" value="$45,200" icon={TrendingUp} color="red" />
+            <StatCard title="Inventory Cost" value="$28,500" icon={ShoppingCart} color="blue" />
+            <StatCard title="Operating Costs" value="$12,400" icon={Home} color="purple" />
+            <StatCard title="Net Profit (Est)" value="$1.8L" icon={TrendingUp} color="green" />
          </div>
 
          <div className="surface-card">
@@ -80,7 +80,7 @@ const Expenses = () => {
                            </td>
                            <td className="p-4 text-muted text-xs">{exp.date}</td>
                            <td className="p-4 text-right">
-                              <p className="text-white font-black text-sm">₹{exp.amount.toLocaleString()}</p>
+                              <p className="text-white font-black text-sm">${exp.amount.toLocaleString()}</p>
                            </td>
                            <td className="p-4">
                               <Badge variant={exp.status === 'Paid' ? 'success' : 'warning'}>{exp.status}</Badge>

@@ -42,6 +42,7 @@ const CustomerDetail = React.lazy(() => import('@/pages/tenant/customers/Custome
 const Campaigns = React.lazy(() => import('@/pages/tenant/customers/Campaigns'));
 
 // Billing
+const SubscriptionHistory = React.lazy(() => import('@/pages/tenant/billing/SubscriptionHistory'));
 // const InvoiceList = React.lazy(() => import('@/pages/tenant/billing/InvoiceList'));
 // const CreateInvoice = React.lazy(() => import('@/pages/tenant/billing/CreateInvoice'));
 // const Expenses = React.lazy(() => import('@/pages/tenant/billing/Expenses'));
@@ -132,7 +133,7 @@ const App = () => {
             </Route>
 
             {/* Billing */}
-
+            <Route path="billing/subscription-history" element={<SubscriptionHistory />} />
             {/* <Route path="billing">
               <Route path="invoices">
                 <Route index element={<InvoiceList />} />
