@@ -32,6 +32,8 @@ export const startOnboarding = async (req, res, next) => {
       },
     })
 
+    console.log(`\n🔑 [ONBOARDING] New OTP generated for ${email}: ${otp}\n`)
+
     await sendEmail({
       to: email,
       subject: "Verify your email — GMS Onboarding",
@@ -105,6 +107,14 @@ export const submitDocuments = async (req, res, next) => {
     const { tenantId, ...details } = req.body
     const files = req.files || {}
 
+    // Check for required files
+    const requiredFiles = ["tradeLicenseFront", "tradeLicenseBack", "ownerIdFront", "ownerIdBack", "vatCertificate"]
+    for (const field of requiredFiles) {
+      if (!files[field]) {
+        return res.status(400).json({ success: false, message: `Document required: ${field}` })
+      }
+    }
+
     const updateData = {
       ...details,
       numberOfBranches: Number(details.numberOfBranches) || 1,
@@ -161,6 +171,25 @@ export const verifyPayment = async (req, res, next) => {
 /**
  * Get Status
  */
+export const getStatusByEmail = async (req, res, next) => {
+  try {
+    const { email } = req.params
+    const tenant = await prisma.tenant.findUnique({ where: { email } })
+    if (!tenant) return res.status(404).json({ success: false, message: "Application not found for this email" })
+    
+    res.json({ success: true, data: {
+      status: tenant.status,
+      ownerName: tenant.ownerName,
+      garageName: tenant.garageName,
+      rejectionReason: tenant.rejectionReason,
+      isEmailVerified: tenant.isEmailVerified,
+      id: tenant.id
+    } })
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const getStatus = async (req, res, next) => {
   try {
     const { tenantId } = req.params

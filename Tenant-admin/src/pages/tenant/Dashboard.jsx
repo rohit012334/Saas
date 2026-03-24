@@ -12,9 +12,36 @@ import { StatCard } from '@/components/shared/StatCard';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Badge } from '@/components/shared/Badge';
 import { revenueChartData, jobsChartData, repairOrders, parts, invoices, employees } from '@/data/dummyData';
+import { commonApi } from '@/utils/api';
+import { cn } from '@/lib/utils';
 
 const Dashboard = () => {
   const { t } = useTranslation();
+  const [banners, setBanners] = React.useState([]);
+  const [currentBanner, setCurrentBanner] = React.useState(0);
+
+  React.useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const res = await commonApi.getBanners('TENANT');
+        if (res.data.success) {
+          setBanners(res.data.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch banners:', err);
+      }
+    };
+    fetchBanners();
+  }, []);
+
+  React.useEffect(() => {
+    if (banners.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentBanner((prev) => (prev + 1) % banners.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [banners.length]);
 
   const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6'];
 
@@ -24,6 +51,61 @@ const Dashboard = () => {
         title={t('sidebar:dashboard')}
         breadcrumbs={['GMS', t('sidebar:dashboard')]}
       />
+
+      {/* Banner Carousel */}
+      {banners.length > 0 && (
+        <div className="relative h-48 md:h-64 rounded-2xl overflow-hidden shadow-2xl group border border-primary/20">
+          <div
+            className="flex transition-transform duration-500 ease-in-out h-full"
+            style={{ transform: `translateX(-${currentBanner * 100}%)` }}
+          >
+            {banners.map((banner, idx) => (
+              <div key={banner.id} className="min-w-full h-full relative">
+                <img
+                  src={banner.imageUrl}
+                  alt={banner.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex flex-col justify-center p-8 md:p-12">
+                  <Badge className="w-fit mb-3 bg-primary/20 text-primary border-primary/30 uppercase tracking-widest text-[9px] font-bold">
+                    Announcement
+                  </Badge>
+                  <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-2 drop-shadow-lg">
+                    {banner.title}
+                  </h2>
+                  {/* <p className="text-sm md:text-base text-white/80 max-w-md line-clamp-2 font-medium">
+                    New update for your dashboard is live. Explore features.
+                  </p> */}
+                  {banner.linkUrl && (
+                    <a
+                      href={banner.linkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 flex items-center gap-2 text-primary font-bold text-xs bg-white/10 hover:bg-white/20 w-fit px-4 py-2 rounded-full transition-all border border-white/10"
+                    >
+                      Learn More <ArrowRight size={14} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Indicators */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            {banners.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentBanner(idx)}
+                className={cn(
+                  "h-1.5 rounded-full transition-all",
+                  currentBanner === idx ? "w-8 bg-primary" : "w-1.5 bg-white/30 hover:bg-white/50"
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Row 1: Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">

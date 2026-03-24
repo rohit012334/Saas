@@ -61,6 +61,26 @@ enum SuperAdminRole {
   TECHNICAL_ADMIN
 }
 
+enum StaffRole {
+  TENANT_ADMIN
+  MANAGER
+  RECEPTIONIST
+  MECHANIC
+  STAFF
+}
+
+enum BannerTarget {
+  TENANT
+  USER
+  MECHANIC
+}
+
+enum CmsType {
+  FAQ
+  PRIVACY_POLICY
+  TERMS_CONDITIONS
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // SUPER ADMIN
 // ─────────────────────────────────────────────────────────────────────────────
@@ -71,6 +91,15 @@ model SuperAdmin {
   email       String         @unique
   password    String
   role        SuperAdminRole @default(SUPPORT_MANAGER)
+  
+  // Modular Access Control
+  canManageTenants       Boolean @default(false)
+  canManageSubs          Boolean @default(false)
+  canManageBanners       Boolean @default(false)
+  canManageAnnouncements Boolean @default(false)
+  canManageSupport       Boolean @default(false)
+  canManageCms           Boolean @default(false)
+  
   phone       String?
   avatar      String?
   isActive    Boolean        @default(true)
@@ -171,8 +200,54 @@ model Tenant {
 
   verifiedBy    SuperAdmin?          @relation("VerifiedBy", fields: [verifiedById], references: [id])
   subscriptions TenantSubscription[]
+  staff         Staff[]
 
   @@map("tenants")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TENANT STAFF
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Staff {
+  id        String    @id @default(cuid())
+  tenantId  String
+  name      String
+  email     String    @unique
+  password  String
+  role      StaffRole @default(STAFF)
+  phone     String?
+  address   String?
+  skills    String[]
+  avatar    String?
+  isActive  Boolean   @default(true)
+
+  // Modular Access Control (Based on Sidebar)
+  canAccessDashboard      Boolean @default(false)
+  canAccessRepairOrders   Boolean @default(false)
+  canAccessDiagnostics    Boolean @default(false)
+  canAccessInventory      Boolean @default(false)
+  canAccessPartsSourcing  Boolean @default(false)
+  canAccessFleet          Boolean @default(false)
+  canAccessHr             Boolean @default(false)
+  canAccessCustomers      Boolean @default(false)
+  canAccessServices       Boolean @default(false)
+  canAccessReports        Boolean @default(false)
+  canAccessBilling        Boolean @default(false)
+  canAccessSettings       Boolean @default(false)
+
+  // Document Uploads (Staff documents)
+  idCardFrontUrl          String?
+  idCardBackUrl           String?
+  contractUrl             String?
+  otherDocUrl             String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_staff")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -209,4 +284,40 @@ model TenantSubscription {
   plan   SubscriptionPlan @relation(fields: [planId], references: [id])
 
   @@map("tenant_subscriptions")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BANNER MANAGEMENT
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Banner {
+  id        String       @id @default(cuid())
+  title     String?
+  imageUrl  String
+  linkUrl   String?
+  target    BannerTarget @default(TENANT)
+  isActive  Boolean      @default(true)
+  priority  Int          @default(0)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("banners")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CMS CONTENT (FAQ, Privacy, Terms)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model CmsContent {
+  id        String       @id @default(cuid())
+  type      CmsType
+  title     Json         // Stored as { en: "", ar: "" }
+  content   Json         // Stored as { en: "", ar: "" }
+  target    BannerTarget @default(USER)
+  isActive  Boolean      @default(true)
+  priority  Int          @default(0)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("cms_contents")
 }

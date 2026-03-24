@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { Bell, Search, Globe, ChevronDown, User, Settings, LogOut } from 'lucide-react';
 import { useRoleStore } from '@/store/useRoleStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import LanguageToggle from '@/components/shared/LanguageToggle';
 import { clsx } from 'clsx';
 

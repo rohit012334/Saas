@@ -26,11 +26,11 @@ import { LanguageToggle } from '../shared/LanguageToggle'
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { path: '/super-admin/dashboard', icon: LayoutDashboard, key: 'dashboard', roles: ['Super Admin', 'Support Manager', 'Billing Admin', 'Technical Admin'] },
+  { path: '/super-admin/dashboard', icon: LayoutDashboard, key: 'dashboard' },
   {
     key: 'tenantManagement',
     icon: Building2,
-    roles: ['Super Admin', 'Support Manager', 'Technical Admin'],
+    permission: 'tenants',
     children: [
       { path: '/super-admin/tenants', key: 'allTenants' },
       { path: '/super-admin/tenants/create', key: 'addNewTenant' },
@@ -40,20 +40,20 @@ const navItems = [
   {
     key: 'subscriptions',
     icon: CreditCard,
-    roles: ['Super Admin', 'Billing Admin'],
+    permission: 'subs',
     children: [
       { path: '/super-admin/subscriptions', key: 'plans' },
       { path: '/super-admin/subscriptions/payments', key: 'paymentHistory' },
     ],
   },
-  { path: '/super-admin/banners', icon: ImageIcon, key: 'banners', roles: ['Super Admin', 'Support Manager', 'Technical Admin'] },
-  { path: '/super-admin/users', icon: Users, key: 'adminUsers', roles: ['Super Admin'] },
-  { path: '/super-admin/announcements', icon: Megaphone, key: 'announcements', roles: ['Super Admin', 'Support Manager', 'Technical Admin'] },
-  { path: '/super-admin/support', icon: Headphones, key: 'support', roles: ['Super Admin', 'Support Manager'] },
+  { path: '/super-admin/banners', icon: ImageIcon, key: 'banners', permission: 'banners' },
+  { path: '/super-admin/users', icon: Users, key: 'adminUsers', role: 'SUPER_ADMIN' },
+  { path: '/super-admin/announcements', icon: Megaphone, key: 'announcements', permission: 'announcements' },
+  { path: '/super-admin/support', icon: Headphones, key: 'support', permission: 'support' },
   {
     key: 'cms',
     icon: FileCode,
-    roles: ['Super Admin', 'Support Manager'],
+    permission: 'cms',
     children: [
       { path: '/super-admin/faq', key: 'faq' },
       { path: '/super-admin/terms', key: 'terms' },
@@ -70,6 +70,20 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const [openSubmenu, setOpenSubmenu] = useState(null)
   const isRtl = i18n.dir() === 'rtl'
+
+  const hasPermission = (item) => {
+    // 1. If admin is absolute SUPER_ADMIN, they see everything
+    if (admin?.role === 'SUPER_ADMIN') return true
+
+    // 2. If it's the dashboard, everyone sees it (or add more logic)
+    if (item.key === 'dashboard') return true
+    
+    // 3. Check specific permission
+    if (item.permission && admin?.permissions?.includes(item.permission)) return true
+
+    // 4. Default to false if restricted
+    return false
+  }
 
   const handleLogout = () => {
     logout()
@@ -102,7 +116,8 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
-        {navItems.filter(item => !item.roles || item.roles.includes(admin?.role)).map((item) => {
+        {navItems.filter(hasPermission).map((item) => {
+
           if (item.path) {
             const Icon = item.icon
             return (

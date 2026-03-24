@@ -15,26 +15,28 @@ import { garageInfo } from '@/data/dummyData';
 const Sidebar = () => {
   const { t, i18n } = useTranslation();
   const { isExpanded, toggleSidebar } = useSidebarStore();
-  const { role } = useRoleStore();
+  const { user } = useAuthStore();
+  const permissions = user?.permissions || [];
+  const hasFullAccess = permissions.includes('full_access');
   const isRTL = i18n.dir() === 'rtl';
 
   const menuItems = [
-    { icon: LayoutDashboard, label: t('sidebar:dashboard'), path: '/dashboard', roles: ['All'] },
-    { icon: Wrench, label: t('sidebar:repairOrders'), path: '/repair-orders', roles: ['All'] },
-    { icon: Search, label: t('sidebar:diagnostics'), path: '/diagnostics', roles: ['Tenant Admin', 'Manager', 'Mechanic'] },
-    { icon: Package, label: t('sidebar:inventory'), path: '/inventory', roles: ['Tenant Admin', 'Manager'] },
-    { icon: Search, label: t('sidebar:partsSourcing'), path: '/parts-sourcing', roles: ['Tenant Admin', 'Manager'] },
-    { icon: Truck, label: t('sidebar:fleetManagement'), path: '/fleet', roles: ['Tenant Admin', 'Manager'] },
-    { icon: Users2, label: t('sidebar:hrManagement'), path: '/hr', roles: ['Tenant Admin', 'Manager'] },
-    {icon: Users, label: t('sidebar:customers'), path: '/customers', roles: ['All'] },
-    { icon: Wrench, label: t('sidebar:services'), path: '/services', roles: ['Tenant Admin', 'Manager'] },
-    { icon: PieChart, label: t('sidebar:reports'), path: '/reports', roles: ['Tenant Admin', 'Manager'] },
-    { icon: CreditCard, label: t('sidebar:subscriptionHistory'), path: '/billing/subscription-history', roles: ['Tenant Admin'] },
-    { icon: Settings, label: t('sidebar:settings'), path: '/settings', roles: ['Tenant Admin'] },
+    { icon: LayoutDashboard, label: t('sidebar:dashboard'), path: '/dashboard', permission: 'dashboard' },
+    { icon: Wrench, label: t('sidebar:repairOrders'), path: '/repair-orders', permission: 'repair_orders' },
+    { icon: Search, label: t('sidebar:diagnostics'), path: '/diagnostics', permission: 'diagnostics' },
+    { icon: Package, label: t('sidebar:inventory'), path: '/inventory', permission: 'inventory' },
+    { icon: Search, label: t('sidebar:partsSourcing'), path: '/parts-sourcing', permission: 'parts_sourcing' },
+    { icon: Truck, label: t('sidebar:fleetManagement'), path: '/fleet', permission: 'fleet' },
+    { icon: Users2, label: t('sidebar:hrManagement'), path: '/hr', permission: 'hr' },
+    { icon: Users, label: t('sidebar:customers'), path: '/customers', permission: 'customers' },
+    { icon: Wrench, label: t('sidebar:services'), path: '/services', permission: 'services' },
+    { icon: PieChart, label: t('sidebar:reports'), path: '/reports', permission: 'reports' },
+    { icon: CreditCard, label: t('sidebar:subscriptionHistory'), path: '/billing/subscription-history', permission: 'billing' },
+    { icon: Settings, label: t('sidebar:settings'), path: '/settings', permission: 'settings' },
   ];
 
   const filteredMenu = menuItems.filter(item =>
-    item.roles.includes('All') || item.roles.includes(role)
+    hasFullAccess || permissions.includes(item.permission)
   );
 
   return (
@@ -82,14 +84,14 @@ const Sidebar = () => {
       <div className="p-4 border-t border-border overflow-hidden">
         <div className={clsx("flex items-center gap-3", !isExpanded && "justify-center")}>
           <img
-            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${garageInfo.owner}`}
-            alt="owner"
+            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name || 'Guest'}`}
+            alt="user"
             className="w-10 h-10 rounded-full border border-border"
           />
           {isExpanded && (
             <div className="flex-1 truncate">
-              <p className="text-sm font-semibold text-white truncate">{garageInfo.owner}</p>
-              <p className="text-xs text-muted truncate">{role}</p>
+              <p className="text-sm font-semibold text-white truncate">{user?.name || 'User'}</p>
+              <p className="text-xs text-muted truncate">{user?.role?.replace('_', ' ') || 'Staff'}</p>
             </div>
           )}
         </div>

@@ -11,6 +11,8 @@ import authRoutes from "./routes/auth.routes.js"
 import tenantRoutes from "./routes/tenant.routes.js"
 import adminRoutes from "./routes/admin.routes.js"
 import plansRoutes from "./routes/plans.routes.js"
+import tenantStaffRoutes from "./routes/tenant-staff.routes.js"
+import commonRoutes from "./routes/common.routes.js"
 
 import { errorHandler, notFound } from "./middleware/error.middleware.js"
 
@@ -18,9 +20,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
 
 
-app.use(helmet())
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}))
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "*",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 }))
 app.use(express.json())
@@ -36,8 +53,10 @@ app.get("/health", (req, res) => res.json({ status: "ok" }))
 
 app.use("/api/auth", authRoutes)
 app.use("/api/tenant", tenantRoutes)
-app.use("/api/admin", adminRoutes) // Changed to match the new structure
+app.use("/api/admin", adminRoutes)
 app.use("/api/plans", plansRoutes)
+app.use("/api/tenant-staff", tenantStaffRoutes)
+app.use("/api/common", commonRoutes)
 
 
 app.use(notFound)

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Lock, Mail, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import LanguageToggle from '@/components/shared/LanguageToggle';
+import axios from 'axios';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -15,16 +16,26 @@ const LoginPage = () => {
   const [email, setEmail] = useState('admin@gms.com');
   const [password, setPassword] = useState('password123');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      login({ name: 'Admin User', email });
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5001/api'}/auth/tenant/login`, {
+        email,
+        password
+      });
+
+      if (response.data.success) {
+        const { user, token } = response.data;
+        login(user, token);
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || t('auth:invalidCredentials') || "Invalid Credentials");
+    } finally {
       setLoading(false);
-      navigate('/dashboard');
-    }, 1500);
+    }
   };
 
   return (

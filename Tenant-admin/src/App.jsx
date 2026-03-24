@@ -121,7 +121,7 @@ const App = () => {
 
             <Route path="hr">
               <Route index element={<EmployeeList />} />
-              <Route path="employees/:id" element={<EmployeeDetail />} />
+              <Route path=":id" element={<EmployeeDetail />} />
             </Route>
 
             {/* Customers */}

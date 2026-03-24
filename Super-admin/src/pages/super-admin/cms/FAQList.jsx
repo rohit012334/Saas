@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
-import { Plus, Pencil, Trash2, Search, Languages, Globe } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Plus, Pencil, Trash2, Search, Languages, Globe, Loader2, Target } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { PageHeader } from '../../../components/shared/PageHeader'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '../../../components/shared/Badge'
 import { toast } from '../../../utils/toast'
+import { useAuthStore } from '../../../store/useAuthStore'
 import {
   Dialog,
   DialogContent,
@@ -25,59 +26,93 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 
-// Initial data source - isme FAQs ke questions aur answers (English & Arabic) hain
-const initialFaqs = [
-  { 
-    id: 1, 
-    questionEn: 'How do I reset my password?', 
-    answerEn: 'Go to the login page and click on Forgot Password.',
-    questionAr: 'كيف يمكنني إعادة تعيين كلمة المرور الخاصة بي؟',
-    answerAr: 'اذهب إلى صفحة تسجيل الدخول وانقر على نسيت كلمة المرور.',
-    category: 'Account', 
-    status: 'Published' 
-  },
-  { 
-    id: 2, 
-    questionEn: 'What are the subscription plans?', 
-    answerEn: 'We offer Basic, Pro, and Enterprise plans.',
-    questionAr: 'ما هي خطط الاشتراك؟',
-    answerAr: 'نحن نقدم خطط Basic و Pro و Enterprise.',
-    category: 'Billing', 
-    status: 'Published' 
-  },
-]
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
 
 export function FAQList() {
   const { t } = useTranslation('cms')
-  const [faqs, setFaqs] = useState(initialFaqs) // FAQs list ki state
-  const [search, setSearch] = useState('') // Search keyword state
-  const [displayLang, setDisplayLang] = useState('en') // Table me konsi language dikhani hai (EN/AR)
-  const [modal, setModal] = useState({ open: false, faq: null }) // Add/Edit modal ki state
+  const { token } = useAuthStore()
+  const [faqs, setFaqs] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [displayLang, setDisplayLang] = useState('en')
+  const [modal, setModal] = useState({ open: false, faq: null })
 
-  const filtered = faqs.filter(f => {
-    const qEn = f.questionEn.toLowerCase()
-    const qAr = f.questionAr.toLowerCase()
-    const s = search.toLowerCase()
-    return qEn.includes(s) || qAr.includes(s) || f.category.toLowerCase().includes(s)
-  })
-
-  // FAQ save ya update karne ka logic
-  const handleSave = (faq) => {
-    if (modal.faq) {
-      // Exist karta hai matlab edit mode hai
-      setFaqs(faqs.map(f => f.id === modal.faq.id ? { ...faq, id: f.id } : f))
-      toast.success('FAQ updated successfully')
-    } else {
-      // Naya FAQ add karne ka logic
-      setFaqs([...faqs, { ...faq, id: Date.now() }])
-      toast.success('New FAQ added')
+  const fetchFaqs = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch(`${API_URL}/admin/cms?type=FAQ`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      const result = await res.json()
+      if (result.success) {
+        setFaqs(result.data)
+      }
+    } catch (err) {
+      toast.error('Failed to load FAQs')
+    } finally {
+      setLoading(false)
     }
-    setModal({ open: false, faq: null })
   }
 
-  const handleDelete = (id) => {
-    setFaqs(faqs.filter(f => f.id !== id))
-    toast.success('FAQ deleted')
+  useEffect(() => {
+    fetchFaqs()
+  }, [])
+
+  const filtered = faqs.filter(f => {
+    const qEn = (f.title.en || '').toLowerCase()
+    const qAr = (f.title.ar || '').toLowerCase()
+    const s = search.toLowerCase()
+    return qEn.includes(s) || qAr.includes(s)
+  })
+
+  const handleSave = async (payload) => {
+    try {
+      const url = modal.faq 
+        ? `${API_URL}/admin/cms/${modal.faq.id}` 
+        : `${API_URL}/admin/cms`
+      
+      const method = modal.faq ? 'PUT' : 'POST'
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ...payload,
+          type: 'FAQ'
+        })
+      })
+
+      const result = await res.json()
+      if (result.success) {
+        toast.success(modal.faq ? 'FAQ updated' : 'New FAQ added')
+        setModal({ open: false, faq: null })
+        fetchFaqs()
+      } else {
+        toast.error(result.message || 'Error occurred')
+      }
+    } catch (err) {
+      toast.error('Operation failed')
+    }
+  }
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure?')) return
+    try {
+      const res = await fetch(`${API_URL}/admin/cms/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      const result = await res.json()
+      if (result.success) {
+        toast.success('FAQ deleted')
+        fetchFaqs()
+      }
+    } catch (err) {
+      toast.error('Delete failed')
+    }
   }
 
   return (
@@ -111,7 +146,7 @@ export function FAQList() {
                   className="rounded-lg px-4"
                   onClick={() => setDisplayLang('en')}
                 >
-                  {t('faq.english')}
+                  English
                 </Button>
                 <Button 
                   variant={displayLang === 'ar' ? 'default' : 'ghost'} 
@@ -119,54 +154,61 @@ export function FAQList() {
                   className="rounded-lg px-4"
                   onClick={() => setDisplayLang('ar')}
                 >
-                  {t('faq.arabic')}
+                  Arabic
                 </Button>
               </div>
             </CardContent>
           </Card>
 
           <Card className="border-border/50 shadow-sm overflow-hidden">
-            <Table>
-              <TableHeader className="bg-muted/30">
-                <TableRow>
-                  <TableHead className="w-[50%]">{t('faq.table.question')}</TableHead>
-                  <TableHead>{t('faq.table.category')}</TableHead>
-                  <TableHead>{t('faq.table.status')}</TableHead>
-                  <TableHead className="text-right">{t('faq.table.actions')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((faq) => (
-                  <TableRow key={faq.id} className="group transition-colors hover:bg-muted/5">
-                    <TableCell className={cn(
-                      "font-medium py-4",
-                      displayLang === 'ar' && "text-right"
-                    )} dir={displayLang === 'ar' ? 'rtl' : 'ltr'}>
-                      {/* Toggle ke basis par ya EN dikhega ya AR */}
-                      {displayLang === 'en' ? faq.questionEn : faq.questionAr}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="bg-muted/50">{faq.category}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={faq.status === 'Published' ? 'active' : 'inactive'}>
-                        {faq.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                        <Button variant="ghost" size="icon-sm" onClick={() => setModal({ open: true, faq })}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon-sm" className="text-destructive hover:text-destructive hover:bg-destructive/5" onClick={() => handleDelete(faq.id)}>
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            {loading ? (
+              <div className="flex h-64 items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <Table>
+                <TableHeader className="bg-muted/30">
+                  <TableRow>
+                    <TableHead className="w-[40%]">Question</TableHead>
+                    <TableHead>Target App</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((faq) => (
+                    <TableRow key={faq.id} className="group transition-colors hover:bg-muted/5">
+                      <TableCell className={cn(
+                        "font-medium py-4 text-sm",
+                        displayLang === 'ar' && "text-right"
+                      )} dir={displayLang === 'ar' ? 'rtl' : 'ltr'}>
+                        {displayLang === 'en' ? faq.title.en : faq.title.ar}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={faq.target === 'USER' ? 'default' : 'destructive'} className="text-[9px] font-black uppercase tracking-widest">
+                          {faq.target}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={faq.isActive ? 'active' : 'inactive'}>
+                          {faq.isActive ? 'Published' : 'Draft'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button variant="ghost" size="icon-sm" onClick={() => setModal({ open: true, faq })}>
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon-sm" className="text-destructive hover:text-destructive hover:bg-destructive/5" onClick={() => handleDelete(faq.id)}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </Card>
         </div>
       </div>
@@ -183,61 +225,94 @@ export function FAQList() {
 
 function FAQModal({ open, faq, onClose, onSave }) {
   const { t } = useTranslation('cms')
+  const [isSaving, setIsSaving] = useState(false)
   const [form, setForm] = useState({
-    questionEn: '',
-    answerEn: '',
-    questionAr: '',
-    answerAr: '',
-    category: 'General',
-    status: 'Published'
+    title: { en: '', ar: '' },
+    content: { en: '', ar: '' },
+    target: 'USER',
+    isActive: true
   })
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (faq) {
-      setForm(faq)
+      setForm({
+        title: faq.title || { en: '', ar: '' },
+        content: faq.content || { en: '', ar: '' },
+        target: faq.target || 'USER',
+        isActive: faq.isActive !== undefined ? faq.isActive : true
+      })
     } else {
       setForm({
-        questionEn: '',
-        answerEn: '',
-        questionAr: '',
-        answerAr: '',
-        category: 'General',
-        status: 'Published'
+        title: { en: '', ar: '' },
+        content: { en: '', ar: '' },
+        target: 'USER',
+        isActive: true
       })
     }
   }, [faq, open])
+
+  const handleSubmit = async () => {
+    setIsSaving(true)
+    await onSave(form)
+    setIsSaving(false)
+  }
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="pr-8">
-            {faq ? t('faq.modal.edit') : t('faq.modal.add')}
+            {faq ? 'Edit FAQ Content' : 'Add New FAQ'}
           </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-6 py-4">
+        <div className="grid gap-6 py-4 overflow-y-auto max-h-[70vh]">
+           <div className="space-y-3">
+              <Label className="text-sm font-bold flex items-center gap-2 tracking-widest uppercase opacity-60">
+                <Target className="h-4 w-4" /> Target App
+              </Label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { id: 'USER', label: 'User App', sub: 'Customers' },
+                  { id: 'MECHANIC', label: 'Mechanic', sub: 'Staff' },
+                  { id: 'TENANT', label: 'Dashboard', sub: 'Owners' },
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setForm({...form, target: item.id})}
+                    className={cn(
+                      "flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all",
+                      form.target === item.id ? "border-primary bg-primary/5 ring-2 ring-primary/10" : "border-border hover:border-primary/40 bg-muted/20"
+                    )}
+                  >
+                    <span className="text-xs font-black">{item.label}</span>
+                    <span className="text-[9px] opacity-60 uppercase">{item.sub}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
           <div className="grid gap-4 sm:grid-cols-2">
             {/* English Version */}
             <div className="space-y-4 rounded-xl border border-border/50 bg-muted/20 p-4">
               <div className="flex items-center gap-2 border-b border-border/50 pb-2">
                 <Badge variant="active" className="rounded-md">EN</Badge>
-                <span className="text-sm font-bold">{t('faq.modal.en')}</span>
+                <span className="text-sm font-bold">English Version</span>
               </div>
               <div className="space-y-2">
-                <Label>{t('faq.modal.question')}</Label>
+                <Label>Question</Label>
                 <Input 
                   placeholder="Enter question in English"
-                  value={form.questionEn}
-                  onChange={(e) => setForm({ ...form, questionEn: e.target.value })}
+                  value={form.title.en}
+                  onChange={(e) => setForm({ ...form, title: {...form.title, en: e.target.value } })}
                 />
               </div>
               <div className="space-y-2">
-                <Label>{t('faq.modal.answer')}</Label>
+                <Label>Answer</Label>
                 <textarea 
                   placeholder="Enter answer in English"
                   className="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                  value={form.answerEn}
-                  onChange={(e) => setForm({ ...form, answerEn: e.target.value })}
+                  value={form.content.en}
+                  onChange={(e) => setForm({ ...form, content: {...form.content, en: e.target.value } })}
                 />
               </div>
             </div>
@@ -246,62 +321,37 @@ function FAQModal({ open, faq, onClose, onSave }) {
             <div className="space-y-4 rounded-xl border border-primary/20 bg-primary/5 p-4" dir="rtl">
               <div className="flex items-center gap-2 border-b border-primary/10 pb-2 flex-row-reverse">
                 <Badge variant="active" className="rounded-md bg-primary text-primary-foreground">AR</Badge>
-                <span className="text-sm font-bold">{t('faq.modal.ar')}</span>
+                <span className="text-sm font-bold">Arabic Version</span>
               </div>
               <div className="space-y-2 text-right">
-                <Label>{t('faq.modal.question')}</Label>
+                <Label>السؤال (Question)</Label>
                 <Input 
                   className="text-right"
                   placeholder="أدخل السؤال بالعربية"
-                  value={form.questionAr}
-                  onChange={(e) => setForm({ ...form, questionAr: e.target.value })}
+                  value={form.title.ar}
+                  onChange={(e) => setForm({ ...form, title: {...form.title, ar: e.target.value } })}
                 />
               </div>
               <div className="space-y-2 text-right">
-                <Label>{t('faq.modal.answer')}</Label>
+                <Label>الإجابة (Answer)</Label>
                 <textarea 
                     className="flex min-h-[120px] w-full resize-none rounded-md border border-input bg-transparent px-3 py-2 text-sm text-right focus:outline-none focus:ring-1 focus:ring-primary"
                   placeholder="أدخل الإجابة بالعربية"
-                  value={form.answerAr}
-                  onChange={(e) => setForm({ ...form, answerAr: e.target.value })}
+                  value={form.content.ar}
+                  onChange={(e) => setForm({ ...form, content: {...form.content, ar: e.target.value } })}
                 />
               </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>{t('faq.modal.category')}</Label>
-              <select 
-                className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
-              >
-                <option value="General">General</option>
-                <option value="Account">Account</option>
-                <option value="Billing">Billing</option>
-                <option value="Support">Support</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label>{t('faq.modal.status')}</Label>
-              <select 
-                className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                value={form.status}
-                onChange={(e) => setForm({ ...form, status: e.target.value })}
-              >
-                <option value="Published">Published</option>
-                <option value="Draft">Draft</option>
-              </select>
             </div>
           </div>
         </div>
         <DialogFooter className="border-t pt-4 gap-2">
-          <Button variant="outline" onClick={onClose} className="rounded-xl px-6">{t('faq.modal.cancel')}</Button>
-          <Button onClick={() => onSave(form)} className="rounded-xl px-8 shadow-lg shadow-primary/20">{t('faq.modal.save')}</Button>
+          <Button variant="outline" onClick={onClose} disabled={isSaving} className="rounded-xl px-6">Cancel</Button>
+          <Button onClick={handleSubmit} disabled={isSaving} className="rounded-xl px-8 shadow-lg shadow-primary/20">
+            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save FAQ
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
-

@@ -2,7 +2,7 @@ import express from "express"
 import * as tenant from "../controllers/tenant/tenant.controller.js"
 import { upload } from "../middleware/upload.middleware.js"
 import { validate } from "../middleware/validate.middleware.js"
-import { startOnboardingSchema, verifyOtpSchema, createOrderSchema } from "../validations/tenant.validation.js"
+import { startOnboardingSchema, verifyOtpSchema, createOrderSchema, submitDocumentsSchema } from "../validations/tenant.validation.js"
 
 const router = express.Router()
 
@@ -18,9 +18,10 @@ const uploadFields = [
   { name: "vatCertificate", maxCount: 1 },
 ]
 
-router.post("/submit-documents", upload.fields(uploadFields), tenant.submitDocuments)
+router.post("/submit-documents", upload.fields(uploadFields), validate(submitDocumentsSchema), tenant.submitDocuments)
 router.post("/verify-payment", tenant.verifyPayment)
 router.get("/status/:tenantId", tenant.getStatus)
+router.get("/status-by-email/:email", tenant.getStatusByEmail)
 router.post("/resubmit/:tenantId", upload.fields(uploadFields), tenant.resubmitDocuments)
 
 export default router

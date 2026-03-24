@@ -19,15 +19,16 @@ export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (login(email, password)) {
+    if (await login(email, password)) {
       toast.success('Welcome back!')
-      navigate('/super-admin/dashboard')
+      navigate('/super-admin/dashboard', { replace: true })
     } else {
       toast.error(t('invalidCredentials'))
     }
   }
+
 
   return (
     <div className="flex min-h-screen w-full bg-background">

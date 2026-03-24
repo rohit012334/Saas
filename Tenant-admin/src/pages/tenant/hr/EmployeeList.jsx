@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
   Users, UserCheck, UserMinus, Wrench, 
@@ -10,117 +10,162 @@ import { Badge } from '@/components/shared/Badge';
 import { StatCard } from '@/components/shared/StatCard';
 import { ExportButton } from '@/components/shared/ExportButton';
 import { DateFilter } from '@/components/shared/DateFilter';
-import { employees as initialEmployees } from '@/data/dummyData';
 import { useNavigate } from 'react-router-dom';
+import { clsx } from 'clsx';
+import { staffApi } from '@/utils/api';
 
 const EmployeeList = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [employeeList, setEmployeeList] = useState(initialEmployees);
+  const [employeeList, setEmployeeList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [dateFilter, setDateFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
-  const [formData, setFormData] = useState({
+  
+  const initialFormData = {
     name: '',
     phone: '',
     email: '',
-    role: 'Mechanic',
+    role: 'MECHANIC',
     password: '',
     address: '',
     skills: '',
-    documents: []
-  });
+    canAccessDashboard: false,
+    canAccessRepairOrders: false,
+    canAccessDiagnostics: false,
+    canAccessInventory: false,
+    canAccessPartsSourcing: false,
+    canAccessFleet: false,
+    canAccessHr: false,
+    canAccessCustomers: false,
+    canAccessServices: false,
+    canAccessReports: false,
+    canAccessBilling: false,
+    canAccessSettings: false,
+    isActive: true,
+    idCardFront: null,
+    idCardBack: null,
+    contract: null,
+    otherDoc: null,
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const fetchEmployees = async () => {
+    try {
+      setIsLoading(true);
+      const res = await staffApi.getAll();
+      if (res.data.success) {
+        setEmployeeList(res.data.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch employees:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const modules = [
+    { id: 'canAccessDashboard', label: t('sidebar:dashboard') },
+    { id: 'canAccessRepairOrders', label: t('sidebar:repairOrders') },
+    { id: 'canAccessDiagnostics', label: t('sidebar:diagnostics') },
+    { id: 'canAccessInventory', label: t('sidebar:inventory') },
+    { id: 'canAccessPartsSourcing', label: t('sidebar:partsSourcing') },
+    { id: 'canAccessFleet', label: t('sidebar:fleetManagement') },
+    { id: 'canAccessHr', label: t('sidebar:hrManagement') },
+    { id: 'canAccessCustomers', label: t('sidebar:customers') },
+    { id: 'canAccessServices', label: t('sidebar:services') },
+    { id: 'canAccessReports', label: t('sidebar:reports') },
+    { id: 'canAccessBilling', label: t('sidebar:subscriptionHistory') },
+    { id: 'canAccessSettings', label: t('sidebar:settings') },
+  ];
 
   const filteredEmployees = useMemo(() => {
     return employeeList.filter(emp => {
       const matchesSearch = 
         emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         emp.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        emp.phone.includes(searchQuery);
+        (emp.phone && emp.phone.includes(searchQuery));
       
       if (!matchesSearch) return false;
-
-      if (dateFilter === 'all') return true;
-      
-      const joinDate = new Date(emp.joinDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const yesterday = new Date(today);
-      yesterday.setDate(today.getDate() - 1);
-
-      if (dateFilter === 'today') return joinDate >= today;
-      if (dateFilter === 'yesterday') return joinDate >= yesterday && joinDate < today;
-      if (dateFilter === '7days') {
-        const sevenDaysAgo = new Date(today);
-        sevenDaysAgo.setDate(today.getDate() - 7);
-        return joinDate >= sevenDaysAgo;
-      }
-
       return true;
     });
-  }, [employeeList, searchQuery, dateFilter]);
+  }, [employeeList, searchQuery]);
 
   const handleOpenModal = (emp = null) => {
     if (emp) {
       setEditingEmployee(emp);
       setFormData({
         name: emp.name,
-        phone: emp.phone,
+        phone: emp.phone || '',
         email: emp.email || '',
         role: emp.role,
         password: '',
         address: emp.address || '',
-        skills: emp.skills.join(', '),
-        documents: emp.documents || []
+        skills: emp.skills || '',
+        canAccessDashboard: emp.canAccessDashboard,
+        canAccessRepairOrders: emp.canAccessRepairOrders,
+        canAccessDiagnostics: emp.canAccessDiagnostics,
+        canAccessInventory: emp.canAccessInventory,
+        canAccessPartsSourcing: emp.canAccessPartsSourcing,
+        canAccessFleet: emp.canAccessFleet,
+        canAccessHr: emp.canAccessHr,
+        canAccessCustomers: emp.canAccessCustomers,
+        canAccessServices: emp.canAccessServices,
+        canAccessReports: emp.canAccessReports,
+        canAccessBilling: emp.canAccessBilling,
+        canAccessSettings: emp.canAccessSettings,
+        isActive: emp.isActive,
+        idCardFront: null,
+        idCardBack: null,
+        contract: null,
+        otherDoc: null,
       });
     } else {
       setEditingEmployee(null);
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        role: 'Mechanic',
-        password: '',
-        address: '',
-        skills: '',
-        documents: []
-      });
+      setFormData(initialFormData);
     }
     setIsModalOpen(true);
   };
 
-  const handleAddEmployee = (e) => {
+  const handleAddEmployee = async (e) => {
     e.preventDefault();
-    if (editingEmployee) {
-      setEmployeeList(employeeList.map(emp => 
-        emp.id === editingEmployee.id 
-          ? { ...emp, ...formData, skills: formData.skills.split(',').map(s => s.trim()) } 
-          : emp
-      ));
-    } else {
-      const id = (employeeList.length + 1).toString();
-      const addedEmployee = {
-        id,
-        ...formData,
-        status: t('hr:active'),
-        joinDate: new Date().toISOString().split('T')[0],
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.name}`,
-        skills: formData.skills.split(',').map(s => s.trim())
-      };
-      setEmployeeList([addedEmployee, ...employeeList]);
+    try {
+      let res;
+      if (editingEmployee) {
+        res = await staffApi.update(editingEmployee.id, formData);
+      } else {
+        res = await staffApi.create(formData);
+      }
+      
+      if (res.data.success) {
+        fetchEmployees();
+        setIsModalOpen(false);
+        setShowSuccessToast(true);
+        setTimeout(() => setShowSuccessToast(false), 3000);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Operation failed");
     }
-    
-    setIsModalOpen(false);
-    setShowSuccessToast(true);
-    setTimeout(() => setShowSuccessToast(false), 3000);
   };
 
-  const handleDeleteEmployee = (id) => {
+  const handleDeleteEmployee = async (id) => {
     if (window.confirm(t('common:confirmDelete') || "Are you sure you want to delete this employee?")) {
-      setEmployeeList(employeeList.filter(emp => emp.id !== id));
+      try {
+        const res = await staffApi.delete(id);
+        if (res.data.success) {
+          fetchEmployees();
+        }
+      } catch (err) {
+        alert(err.response?.data?.message || "Failed to delete");
+      }
     }
   };
 
@@ -184,9 +229,13 @@ const EmployeeList = () => {
               <tbody className="divide-y divide-border">
                 {filteredEmployees.map((emp) => (
                   <tr key={emp.id} className="hover:bg-white/5 transition-smooth group cursor-pointer">
-                    <td className="p-4" onClick={() => navigate(`/hr/employees/${emp.id}`)}>
+                    <td className="p-4" onClick={() => navigate(`/hr/${emp.id}`)}>
                        <div className="flex items-center gap-3">
-                         <img src={emp.avatar} className="w-10 h-10 rounded-full border border-border" alt="avatar" />
+                         <img 
+                           src={emp.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${emp.name}`} 
+                           className="w-10 h-10 rounded-full border border-border" 
+                           alt="avatar" 
+                         />
                          <div>
                             <p className="text-white font-bold text-sm">{emp.name}</p>
                             <p className="text-[10px] text-muted">{emp.phone}</p>
@@ -194,29 +243,31 @@ const EmployeeList = () => {
                        </div>
                     </td>
                     <td className="p-4">
-                       <Badge variant={emp.role === 'Tenant Admin' ? 'purple' : emp.role === 'Manager' ? 'info' : 'muted'}>
+                       <Badge variant={emp.role === 'TENANT_ADMIN' ? 'purple' : emp.role === 'MANAGER' ? 'info' : 'muted'}>
                           {emp.role}
                        </Badge>
                     </td>
                     <td className="p-4">
                        <div className="flex flex-wrap gap-1">
-                          {emp.skills.map(skill => (
+                          {(emp.skills || []).map(skill => (
                             <span key={skill} className="text-[9px] bg-white/5 text-muted px-1.5 py-0.5 rounded border border-border/50">
                                {skill}
                             </span>
                           ))}
                        </div>
                     </td>
-                    <td className="p-4 text-muted text-xs">{emp.joinDate}</td>
+                    <td className="p-4 text-muted text-xs">{new Date(emp.createdAt).toLocaleDateString()}</td>
                     <td className="p-4">
-                       <Badge variant="success">{emp.status === 'Active' ? t('hr:active') : emp.status}</Badge>
+                       <Badge variant={emp.isActive ? 'success' : 'danger'}>
+                          {emp.isActive ? t('hr:active') : (t('hr:inactive') || 'Inactive')}
+                       </Badge>
                     </td>
                     <td className="p-4 text-right">
                        <div className="flex items-center justify-end gap-2 transition-smooth">
                           <button 
                             className="p-1.5 text-muted hover:text-primary transition-smooth" 
                             title={t('hr:viewProfile')}
-                            onClick={(e) => { e.stopPropagation(); navigate(`/hr/employees/${emp.id}`); }}
+                            onClick={(e) => { e.stopPropagation(); navigate(`/hr/${emp.id}`); }}
                           >
                             <Eye size={16} />
                           </button>
@@ -312,10 +363,68 @@ const EmployeeList = () => {
                     value={formData.role}
                     onChange={(e) => setFormData({...formData, role: e.target.value})}
                   >
-                    <option value="Mechanic">{t('hr:mechanic')}</option>
-                    <option value="Manager">{t('hr:manager')}</option>
-                    <option value="Receptionist">{t('hr:receptionist')}</option>
+                    <option value="MECHANIC">{t('hr:mechanic')}</option>
+                    <option value="MANAGER">{t('hr:manager')}</option>
+                    <option value="RECEPTIONIST">{t('hr:receptionist')}</option>
+                    <option value="TENANT_ADMIN">{t('hr:admin') || "Admin"}</option>
+                    <option value="STAFF">{t('hr:staff') || "Staff"}</option>
                   </select>
+                </div>
+                {editingEmployee && (
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-muted uppercase tracking-widest">{t('hr:status') || "Status"}</label>
+                    <div className="flex items-center gap-3 p-3 bg-white/5 border border-border rounded-xl">
+                      <button
+                        type="button"
+                        onClick={() => setFormData({...formData, isActive: !formData.isActive})}
+                        className={clsx(
+                          "w-10 h-5 rounded-full transition-smooth relative",
+                          formData.isActive ? "bg-green-500" : "bg-muted"
+                        )}
+                      >
+                        <div className={clsx(
+                          "absolute top-1 w-3 h-3 bg-white rounded-full transition-smooth",
+                          formData.isActive ? "right-1" : "left-1"
+                        )} />
+                      </button>
+                      <span className={clsx("text-xs font-bold", formData.isActive ? "text-green-500" : "text-muted")}>
+                        {formData.isActive ? t('hr:active') : t('hr:inactive') || "Inactive"}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Module Access Controls */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-bold text-muted uppercase tracking-widest">{t('hr:moduleAccess') || "Module Access"}</label>
+                  {formData.role === 'TENANT_ADMIN' && (
+                    <span className="text-[10px] text-green-500 font-bold uppercase tracking-widest">{t('hr:fullAccessGranted') || "Full Access Granted"}</span>
+                  )}
+                </div>
+                
+                <div className={clsx(
+                  "grid grid-cols-2 md:grid-cols-3 gap-3 p-4 rounded-xl border border-border bg-white/5",
+                  formData.role === 'TENANT_ADMIN' && "opacity-50 pointer-events-none"
+                )}>
+                  {modules.map(module => (
+                    <label key={module.id} className="flex items-center gap-2 cursor-pointer group">
+                      <div className={clsx(
+                        "w-5 h-5 rounded border flex items-center justify-center transition-smooth",
+                        formData[module.id] ? "bg-primary border-primary" : "border-border group-hover:border-primary/50"
+                      )}>
+                        <input 
+                          type="checkbox" 
+                          className="hidden" 
+                          checked={formData[module.id]} 
+                          onChange={(e) => setFormData({...formData, [module.id]: e.target.checked})}
+                        />
+                        {formData[module.id] && <Check size={14} className="text-white" />}
+                      </div>
+                      <span className="text-xs text-muted group-hover:text-white transition-smooth">{module.label}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -357,36 +466,86 @@ const EmployeeList = () => {
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-bold text-muted uppercase tracking-widest">{t('hr:requiredProofs')}</label>
+                <label className="text-[10px] font-bold text-muted uppercase tracking-widest">{t('hr:requiredProofs') || "Required Documents"}</label>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Aadhaar Card */}
+                  {/* ID Card Front */}
                   <div className="p-4 border border-border rounded-xl bg-white/5 space-y-2 group hover:border-primary transition-smooth">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white">{t('hr:aadhaarCard')}</span>
-                      <X size={14} className="text-muted cursor-pointer hover:text-red-500" />
+                      <span className="text-xs font-bold text-white uppercase tracking-tighter">{t('hr:idCardFront') || "ID Card Front"}</span>
                     </div>
                     <label className="block w-full cursor-pointer">
                       <div className="border border-dashed border-border p-3 rounded-lg flex items-center justify-center gap-2 group-hover:border-primary/50 transition-smooth">
-                        <Plus size={14} className="text-primary" />
-                        <span className="text-[10px] text-muted group-hover:text-white">{t('hr:uploadAadhaar')}</span>
+                        <Plus size={14} className={formData.idCardFront ? "text-green-500" : "text-primary"} />
+                        <span className="text-[10px] text-muted group-hover:text-white">
+                          {formData.idCardFront ? formData.idCardFront.name : t('hr:uploadFront') || "Upload Front"}
+                        </span>
                       </div>
-                      <input type="file" className="hidden" />
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        onChange={(e) => setFormData({...formData, idCardFront: e.target.files[0]})} 
+                      />
                     </label>
                   </div>
 
-                  {/* PAN Card */}
+                  {/* ID Card Back */}
                   <div className="p-4 border border-border rounded-xl bg-white/5 space-y-2 group hover:border-primary transition-smooth">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white">{t('hr:panCard')}</span>
-                      <X size={14} className="text-muted cursor-pointer hover:text-red-500" />
+                      <span className="text-xs font-bold text-white uppercase tracking-tighter">{t('hr:idCardBack') || "ID Card Back"}</span>
                     </div>
                     <label className="block w-full cursor-pointer">
                       <div className="border border-dashed border-border p-3 rounded-lg flex items-center justify-center gap-2 group-hover:border-primary/50 transition-smooth">
-                        <Plus size={14} className="text-primary" />
-                        <span className="text-[10px] text-muted group-hover:text-white">{t('hr:uploadPan')}</span>
+                        <Plus size={14} className={formData.idCardBack ? "text-green-500" : "text-primary"} />
+                        <span className="text-[10px] text-muted group-hover:text-white">
+                          {formData.idCardBack ? formData.idCardBack.name : t('hr:uploadBack') || "Upload Back"}
+                        </span>
                       </div>
-                      <input type="file" className="hidden" />
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        onChange={(e) => setFormData({...formData, idCardBack: e.target.files[0]})} 
+                      />
+                    </label>
+                  </div>
+
+                  {/* Contract */}
+                  <div className="p-4 border border-border rounded-xl bg-white/5 space-y-2 group hover:border-primary transition-smooth">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-white uppercase tracking-tighter">{t('hr:employmentContract') || "Employment Contract"}</span>
+                    </div>
+                    <label className="block w-full cursor-pointer">
+                      <div className="border border-dashed border-border p-3 rounded-lg flex items-center justify-center gap-2 group-hover:border-primary/50 transition-smooth">
+                        <Plus size={14} className={formData.contract ? "text-green-500" : "text-primary"} />
+                        <span className="text-[10px] text-muted group-hover:text-white">
+                          {formData.contract ? formData.contract.name : t('hr:uploadContract') || "Upload Contract"}
+                        </span>
+                      </div>
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        onChange={(e) => setFormData({...formData, contract: e.target.files[0]})} 
+                      />
+                    </label>
+                  </div>
+
+                  {/* Other */}
+                  <div className="p-4 border border-border rounded-xl bg-white/5 space-y-2 group hover:border-primary transition-smooth">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-white uppercase tracking-tighter">{t('hr:otherDocs') || "Other Documents"}</span>
+                    </div>
+                    <label className="block w-full cursor-pointer">
+                      <div className="border border-dashed border-border p-3 rounded-lg flex items-center justify-center gap-2 group-hover:border-primary/50 transition-smooth">
+                        <Plus size={14} className={formData.otherDoc ? "text-green-500" : "text-primary"} />
+                        <span className="text-[10px] text-muted group-hover:text-white">
+                          {formData.otherDoc ? formData.otherDoc.name : t('hr:uploadOther') || "Upload Other"}
+                        </span>
+                      </div>
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        onChange={(e) => setFormData({...formData, otherDoc: e.target.files[0]})} 
+                      />
                     </label>
                   </div>
                 </div>

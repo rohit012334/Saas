@@ -70,6 +70,6 @@ export const getFileUrl = (file) => {
 
   if (file.location) return file.location
 
-  const clientUrl = process.env.CLIENT_URL || "http://localhost:5001"
-  return `${clientUrl}/uploads/${file.filename}`
+  const backendUrl = process.env.BACKEND_URL || "http://localhost:5001"
+  return `${backendUrl}/uploads/${file.filename}`
 }

@@ -24,7 +24,10 @@
     "clickToUpload": "Click to upload image",
     "clickToChange": "Click to Change",
     "cancel": "Cancel",
-    "save": "Save Banner"
+    "save": "Save Banner",
+    "target": "Target Panel",
+    "targetTenant": "Tenant Dashboard",
+    "targetUser": "User App / Website"
   },
   "successCreate": "Banner created successfully.",
   "successUpdate": "Banner updated successfully.",
