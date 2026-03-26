@@ -9,6 +9,7 @@ import {
 import { useSidebarStore } from '@/store/useSidebarStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useTenantStore } from '@/store/useTenantStore';
 import { clsx } from 'clsx';
 import { garageInfo } from '@/data/dummyData';
 
@@ -16,6 +17,7 @@ const Sidebar = () => {
   const { t, i18n } = useTranslation();
   const { isExpanded, toggleSidebar } = useSidebarStore();
   const { user } = useAuthStore();
+  const { settings } = useTenantStore();
   const permissions = user?.permissions || [];
   const hasFullAccess = permissions.includes('full_access');
   const isRTL = i18n.dir() === 'rtl';
@@ -48,12 +50,16 @@ const Sidebar = () => {
       {/* Logo & Garage Info */}
       <div className="h-20 flex items-center px-4 border-b border-border overflow-hidden whitespace-nowrap">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-xl shrink-0">
-            G
+          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-xl shrink-0 overflow-hidden">
+            {settings.garageLogoUrl ? (
+                <img src={settings.garageLogoUrl} alt="Logo" className="w-full h-full object-cover" />
+            ) : (
+                settings.garageName?.charAt(0) || 'G'
+            )}
           </div>
           {isExpanded && (
             <div className="flex flex-col">
-              <span className="font-bold text-white leading-tight">{garageInfo.name}</span>
+              <span className="font-bold text-white leading-tight">{settings.garageName || garageInfo.name}</span>
               <span className="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded w-fit mt-1 uppercase font-bold tracking-wider">
                 {garageInfo.plan}
               </span>

@@ -3,14 +3,20 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import { useSidebarStore } from '@/store/useSidebarStore';
+import { useTenantStore } from '@/store/useTenantStore';
 import { useTranslation } from 'react-i18next';
 import { clsx } from 'clsx';
 
 const TenantLayout = () => {
   const { isExpanded } = useSidebarStore();
+  const { fetchSettings } = useTenantStore();
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const isRTL = i18n.dir() === 'rtl';
+
+  React.useEffect(() => {
+    fetchSettings();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex overflow-x-hidden">

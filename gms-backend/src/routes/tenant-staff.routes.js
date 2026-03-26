@@ -35,7 +35,4 @@ router.patch(
 
 router.delete("/:id", authorize("TENANT_ADMIN"), staffController.deleteStaff)
 
-// Example of a module-specific route using authorizeStaffPermission
-// router.get("/hr-reports", authorizeStaffPermission("hr"), (req, res) => { ... })
-
 export default router

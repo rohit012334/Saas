@@ -270,10 +270,9 @@ function FAQModal({ open, faq, onClose, onSave }) {
               <Label className="text-sm font-bold flex items-center gap-2 tracking-widest uppercase opacity-60">
                 <Target className="h-4 w-4" /> Target App
               </Label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {[
                   { id: 'USER', label: 'User App', sub: 'Customers' },
-                  { id: 'MECHANIC', label: 'Mechanic', sub: 'Staff' },
                   { id: 'TENANT', label: 'Dashboard', sub: 'Owners' },
                 ].map((item) => (
                   <button

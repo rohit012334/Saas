@@ -12,6 +12,7 @@ import tenantRoutes from "./routes/tenant.routes.js"
 import adminRoutes from "./routes/admin.routes.js"
 import plansRoutes from "./routes/plans.routes.js"
 import tenantStaffRoutes from "./routes/tenant-staff.routes.js"
+import tenantSettingsRoutes from "./routes/settings.routes.js"
 import commonRoutes from "./routes/common.routes.js"
 
 import { errorHandler, notFound } from "./middleware/error.middleware.js"
@@ -56,6 +57,7 @@ app.use("/api/tenant", tenantRoutes)
 app.use("/api/admin", adminRoutes)
 app.use("/api/plans", plansRoutes)
 app.use("/api/tenant-staff", tenantStaffRoutes)
+app.use("/api/tenant-settings", tenantSettingsRoutes)
 app.use("/api/common", commonRoutes)
 
 

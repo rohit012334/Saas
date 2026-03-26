@@ -127,7 +127,6 @@ export function PrivacyPolicy() {
             <CardContent className="p-3 space-y-2">
               {[
                 { id: 'USER', label: 'User App', sub: 'Customers' },
-                { id: 'MECHANIC', label: 'Mechanic App', sub: 'Staff' },
                 { id: 'TENANT', label: 'Admin Panel', sub: 'Garage' },
               ].map((item) => (
                 <button

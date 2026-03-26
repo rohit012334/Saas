@@ -10,6 +10,7 @@ import { TenantDetail } from './pages/super-admin/tenants/TenantDetail'
 import { TenantCreate } from './pages/super-admin/tenants/TenantCreate'
 import { Plans } from './pages/super-admin/subscriptions/Plans'
 import { PaymentHistory } from './pages/super-admin/subscriptions/PaymentHistory'
+import { SubscriptionRequests } from './pages/super-admin/subscriptions/SubscriptionRequests'
 import { Banners } from './pages/super-admin/Banners'
 import { Support } from './pages/super-admin/Support'
 import { CustomerList } from './pages/super-admin/users/CustomerList'
@@ -49,6 +50,7 @@ function AppRoutes() {
         <Route path="customers" element={<CustomerList />} />
         <Route path="subscriptions" element={<Plans />} />
         <Route path="subscriptions/payments" element={<PaymentHistory />} />
+        <Route path="subscriptions/requests" element={<SubscriptionRequests />} />
         <Route path="banners" element={<Banners />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="announcements" element={<Announcements />} />

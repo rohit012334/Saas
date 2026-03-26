@@ -44,6 +44,7 @@ const navItems = [
     children: [
       { path: '/super-admin/subscriptions', key: 'plans' },
       { path: '/super-admin/subscriptions/payments', key: 'paymentHistory' },
+      { path: '/super-admin/subscriptions/requests', key: 'subscriptionRequests' },
     ],
   },
   { path: '/super-admin/banners', icon: ImageIcon, key: 'banners', permission: 'banners' },

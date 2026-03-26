@@ -1,7 +1,3 @@
-// GMS — Garage Management System
-// Prisma Schema — Phase 1 (Tenant Onboarding Flow)
-// Database: PostgreSQL
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,9 +7,181 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENUMS
-// ─────────────────────────────────────────────────────────────────────────────
+model SuperAdmin {
+  id                     String         @id @default(cuid())
+  name                   String
+  email                  String         @unique
+  password               String
+  role                   SuperAdminRole @default(SUPPORT_MANAGER)
+  canManageTenants       Boolean        @default(false)
+  canManageSubs          Boolean        @default(false)
+  canManageBanners       Boolean        @default(false)
+  canManageAnnouncements Boolean        @default(false)
+  canManageSupport       Boolean        @default(false)
+  canManageCms           Boolean        @default(false)
+  phone                  String?
+  avatar                 String?
+  isActive               Boolean        @default(true)
+  lastLoginAt            DateTime?
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  verifiedTenants        Tenant[]       @relation("VerifiedBy")
+
+  @@map("super_admins")
+}
+
+model SubscriptionPlan {
+  id                 String               @id @default(cuid())
+  name               String
+  type               PlanType             @unique
+  monthlyPrice       Decimal              @db.Decimal(10, 2)
+  yearlyPrice        Decimal              @db.Decimal(10, 2)
+  maxStaffUsers      Int
+  maxVehicles        Int
+  maxJobCards        Int?
+  hasRepairOrders    Boolean              @default(true)
+  hasDiagnostics     Boolean              @default(false)
+  hasFleetManagement Boolean              @default(false)
+  hasHrManagement    Boolean              @default(true)
+  hasCrm             Boolean              @default(true)
+  hasPartsSourcing   Boolean              @default(false)
+  hasReports         Boolean              @default(true)
+  hasSms             Boolean              @default(false)
+  hasWhatsapp        Boolean              @default(false)
+  hasEmail           Boolean              @default(true)
+  isActive           Boolean              @default(true)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  subscriptions      TenantSubscription[]
+
+  @@map("subscription_plans")
+}
+
+model Tenant {
+  id                   String               @id @default(cuid())
+  status               TenantStatus         @default(PENDING_VERIFICATION)
+  ownerName            String
+  email                String               @unique
+  phone                String
+  password             String
+  isEmailVerified      Boolean              @default(false)
+  emailOtp             String?
+  emailOtpExpiry       DateTime?
+  garageName           String?
+  garageAddress        String?
+  city                 String?
+  country              String?              @default("UAE")
+  numberOfBranches     Int?                 @default(1)
+  serviceTypes         ServiceType[]
+  garagePhone          String?
+  garageEmail          String?
+  garageLogoUrl        String?
+  trnNumber            String?
+  companyBillingName   String?
+  billingAddress       String?
+  tradeLicenseFrontUrl String?
+  tradeLicenseBackUrl  String?
+  ownerIdFrontUrl      String?
+  ownerIdBackUrl       String?
+  vatCertificateUrl    String?
+  rejectionReason      String?
+  verifiedById         String?
+  verifiedAt           DateTime?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  staff                Staff[]
+  subscriptions        TenantSubscription[]
+  verifiedBy           SuperAdmin?          @relation("VerifiedBy", fields: [verifiedById], references: [id])
+
+  @@map("tenants")
+}
+
+model Staff {
+  id                     String    @id @default(cuid())
+  tenantId               String
+  name                   String
+  email                  String    @unique
+  password               String
+  role                   StaffRole @default(STAFF)
+  phone                  String?
+  address                String?
+  skills                 String[]
+  avatar                 String?
+  isActive               Boolean   @default(true)
+  canAccessDashboard     Boolean   @default(false)
+  canAccessRepairOrders  Boolean   @default(false)
+  canAccessDiagnostics   Boolean   @default(false)
+  canAccessInventory     Boolean   @default(false)
+  canAccessPartsSourcing Boolean   @default(false)
+  canAccessFleet         Boolean   @default(false)
+  canAccessHr            Boolean   @default(false)
+  canAccessCustomers     Boolean   @default(false)
+  canAccessServices      Boolean   @default(false)
+  canAccessReports       Boolean   @default(false)
+  canAccessBilling       Boolean   @default(false)
+  canAccessSettings      Boolean   @default(false)
+  idCardFrontUrl         String?
+  idCardBackUrl          String?
+  contractUrl            String?
+  otherDocUrl            String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  tenant                 Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_staff")
+}
+
+model TenantSubscription {
+  id                String           @id @default(cuid())
+  tenantId          String
+  planId            String
+  interval          PlanInterval     @default(MONTHLY)
+  amount            Decimal          @db.Decimal(10, 2)
+  status            PaymentStatus    @default(PENDING)
+  isActive          Boolean          @default(false)
+  razorpayOrderId   String?          @unique
+  razorpayPaymentId String?          @unique
+  razorpaySignature String?
+  startDate         DateTime?
+  endDate           DateTime?
+  refundedAt        DateTime?
+  refundAmount      Decimal?         @db.Decimal(10, 2)
+  refundReason      String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  plan              SubscriptionPlan @relation(fields: [planId], references: [id])
+  tenant            Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_subscriptions")
+}
+
+model Banner {
+  id        String       @id @default(cuid())
+  title     String?
+  imageUrl  String
+  linkUrl   String?
+  target    BannerTarget @default(TENANT)
+  isActive  Boolean      @default(true)
+  priority  Int          @default(0)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("banners")
+}
+
+model CmsContent {
+  id        String       @id @default(cuid())
+  type      CmsType
+  target    BannerTarget @default(USER)
+  isActive  Boolean      @default(true)
+  priority  Int          @default(0)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  title     Json
+  content   Json
+
+  @@map("cms_contents")
+}
 
 enum PlanType {
   BASIC
@@ -72,252 +240,10 @@ enum StaffRole {
 enum BannerTarget {
   TENANT
   USER
-  MECHANIC
 }
 
 enum CmsType {
   FAQ
   PRIVACY_POLICY
   TERMS_CONDITIONS
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SUPER ADMIN
-// ─────────────────────────────────────────────────────────────────────────────
-
-model SuperAdmin {
-  id          String         @id @default(cuid())
-  name        String
-  email       String         @unique
-  password    String
-  role        SuperAdminRole @default(SUPPORT_MANAGER)
-  
-  // Modular Access Control
-  canManageTenants       Boolean @default(false)
-  canManageSubs          Boolean @default(false)
-  canManageBanners       Boolean @default(false)
-  canManageAnnouncements Boolean @default(false)
-  canManageSupport       Boolean @default(false)
-  canManageCms           Boolean @default(false)
-  
-  phone       String?
-  avatar      String?
-  isActive    Boolean        @default(true)
-  lastLoginAt DateTime?
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
-  verifiedTenants Tenant[] @relation("VerifiedBy")
-
-  @@map("super_admins")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SUBSCRIPTION PLANS
-// ─────────────────────────────────────────────────────────────────────────────
-
-model SubscriptionPlan {
-  id            String   @id @default(cuid())
-  name          String
-  type          PlanType @unique
-  monthlyPrice  Decimal  @db.Decimal(10, 2)
-  yearlyPrice   Decimal  @db.Decimal(10, 2)
-  maxStaffUsers Int
-  maxVehicles   Int
-  maxJobCards   Int?
-
-  // Module access
-  hasRepairOrders    Boolean @default(true)
-  hasDiagnostics     Boolean @default(false)
-  hasFleetManagement Boolean @default(false)
-  hasHrManagement    Boolean @default(true)
-  hasCrm             Boolean @default(true)
-  hasPartsSourcing   Boolean @default(false)
-  hasReports         Boolean @default(true)
-
-  // Notification channels
-  hasSms      Boolean @default(false)
-  hasWhatsapp Boolean @default(false)
-  hasEmail    Boolean @default(true)
-
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  subscriptions TenantSubscription[]
-
-  @@map("subscription_plans")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TENANT
-// ─────────────────────────────────────────────────────────────────────────────
-
-model Tenant {
-  id     String       @id @default(cuid())
-  status TenantStatus @default(PENDING_VERIFICATION)
-
-  // Basic info (Step 1)
-  ownerName String
-  email     String  @unique
-  phone     String
-  password  String
-
-  // Email OTP
-  isEmailVerified Boolean   @default(false)
-  emailOtp        String?
-  emailOtpExpiry  DateTime?
-
-  // Garage details (Step 3)
-  garageName       String?
-  garageAddress    String?
-  city             String?
-  country          String?      @default("UAE")
-  numberOfBranches Int?         @default(1)
-  serviceTypes     ServiceType[]
-  garagePhone      String?
-  garageEmail      String?
-
-  // Tax / Billing (Step 3)
-  trnNumber          String?
-  companyBillingName String?
-  billingAddress     String?
-
-  // Documents — S3 or local URLs (Step 3)
-  tradeLicenseFrontUrl String?
-  tradeLicenseBackUrl  String?
-  ownerIdFrontUrl      String?
-  ownerIdBackUrl       String?
-  vatCertificateUrl    String?
-
-  // Verification
-  rejectionReason String?
-  verifiedById    String?
-  verifiedAt      DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  verifiedBy    SuperAdmin?          @relation("VerifiedBy", fields: [verifiedById], references: [id])
-  subscriptions TenantSubscription[]
-  staff         Staff[]
-
-  @@map("tenants")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TENANT STAFF
-// ─────────────────────────────────────────────────────────────────────────────
-
-model Staff {
-  id        String    @id @default(cuid())
-  tenantId  String
-  name      String
-  email     String    @unique
-  password  String
-  role      StaffRole @default(STAFF)
-  phone     String?
-  address   String?
-  skills    String[]
-  avatar    String?
-  isActive  Boolean   @default(true)
-
-  // Modular Access Control (Based on Sidebar)
-  canAccessDashboard      Boolean @default(false)
-  canAccessRepairOrders   Boolean @default(false)
-  canAccessDiagnostics    Boolean @default(false)
-  canAccessInventory      Boolean @default(false)
-  canAccessPartsSourcing  Boolean @default(false)
-  canAccessFleet          Boolean @default(false)
-  canAccessHr             Boolean @default(false)
-  canAccessCustomers      Boolean @default(false)
-  canAccessServices       Boolean @default(false)
-  canAccessReports        Boolean @default(false)
-  canAccessBilling        Boolean @default(false)
-  canAccessSettings       Boolean @default(false)
-
-  // Document Uploads (Staff documents)
-  idCardFrontUrl          String?
-  idCardBackUrl           String?
-  contractUrl             String?
-  otherDocUrl             String?
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-
-  @@map("tenant_staff")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TENANT SUBSCRIPTION
-// ─────────────────────────────────────────────────────────────────────────────
-
-model TenantSubscription {
-  id       String        @id @default(cuid())
-  tenantId String
-  planId   String
-  interval PlanInterval  @default(MONTHLY)
-  amount   Decimal       @db.Decimal(10, 2)
-  status   PaymentStatus @default(PENDING)
-  isActive Boolean       @default(false)
-
-  // Razorpay
-  razorpayOrderId   String? @unique
-  razorpayPaymentId String? @unique
-  razorpaySignature String?
-
-  // Validity
-  startDate DateTime?
-  endDate   DateTime?
-
-  // Refund
-  refundedAt   DateTime?
-  refundAmount Decimal?  @db.Decimal(10, 2)
-  refundReason String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  tenant Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  plan   SubscriptionPlan @relation(fields: [planId], references: [id])
-
-  @@map("tenant_subscriptions")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// BANNER MANAGEMENT
-// ─────────────────────────────────────────────────────────────────────────────
-
-model Banner {
-  id        String       @id @default(cuid())
-  title     String?
-  imageUrl  String
-  linkUrl   String?
-  target    BannerTarget @default(TENANT)
-  isActive  Boolean      @default(true)
-  priority  Int          @default(0)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-
-  @@map("banners")
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// CMS CONTENT (FAQ, Privacy, Terms)
-// ─────────────────────────────────────────────────────────────────────────────
-
-model CmsContent {
-  id        String       @id @default(cuid())
-  type      CmsType
-  title     Json         // Stored as { en: "", ar: "" }
-  content   Json         // Stored as { en: "", ar: "" }
-  target    BannerTarget @default(USER)
-  isActive  Boolean      @default(true)
-  priority  Int          @default(0)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-
-  @@map("cms_contents")
 }
