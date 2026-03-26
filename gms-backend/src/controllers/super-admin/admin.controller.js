@@ -48,10 +48,10 @@ export const approveTenant = async (req, res, next) => {
       prisma.staff.create({
         data: {
           tenantId: id,
-          name:     tenant.ownerName,
-          email:    tenant.email,
+          name: tenant.ownerName,
+          email: tenant.email,
           password: hashedPassword,
-          role:     "TENANT_ADMIN",
+          role: "TENANT_ADMIN",
         },
       }),
       prisma.tenantSubscription.update({
@@ -99,7 +99,7 @@ export const rejectTenant = async (req, res, next) => {
         await prisma.tenantSubscription.update({
           where: { id: sub.id },
           data: {
-            status:     "REFUNDED",
+            status: "REFUNDED",
             refundedAt: new Date(),
             refundAmount: sub.amount,
             refundReason: reason,
@@ -187,9 +187,9 @@ export const getAdminStaff = async (req, res, next) => {
  */
 export const addAdminStaff = async (req, res, next) => {
   try {
-    const { 
+    const {
       name, email, password, role, phone, status,
-      canManageTenants, canManageSubs, canManageBanners, 
+      canManageTenants, canManageSubs, canManageBanners,
       canManageAnnouncements, canManageSupport, canManageCms,
       permissions // checkbox array from frontend
     } = req.body
@@ -198,7 +198,7 @@ export const addAdminStaff = async (req, res, next) => {
     if (existingAdmin) return res.status(400).json({ success: false, message: "Admin with this email already exists" })
 
     // If password is not provided (should be provided as temp password in modal)
-    const finalPassword = password || crypto.randomBytes(4).toString("hex")
+    const finalPassword = password
     const hashedPassword = await bcrypt.hash(finalPassword, 10)
 
     const admin = await prisma.superAdmin.create({
@@ -211,11 +211,11 @@ export const addAdminStaff = async (req, res, next) => {
         isActive: status === "Inactive" ? false : true,
         // Checkboxes array or boolean flags
         canManageTenants: !!canManageTenants || permissions?.includes("tenants"),
-        canManageSubs:    !!canManageSubs    || permissions?.includes("subs"),
+        canManageSubs: !!canManageSubs || permissions?.includes("subs"),
         canManageBanners: !!canManageBanners || permissions?.includes("banners"),
         canManageAnnouncements: !!canManageAnnouncements || permissions?.includes("announcements"),
         canManageSupport: !!canManageSupport || permissions?.includes("support"),
-        canManageCms:     !!canManageCms     || permissions?.includes("cms"),
+        canManageCms: !!canManageCms || permissions?.includes("cms"),
       },
     })
 
@@ -248,9 +248,9 @@ export const addAdminStaff = async (req, res, next) => {
 export const updateAdminStaff = async (req, res, next) => {
   try {
     const { id } = req.params
-    const { 
+    const {
       name, email, role, phone, status, isActive, password,
-      canManageTenants, canManageSubs, canManageBanners, 
+      canManageTenants, canManageSubs, canManageBanners,
       canManageAnnouncements, canManageSupport, canManageCms,
       permissions
     } = req.body
@@ -264,17 +264,17 @@ export const updateAdminStaff = async (req, res, next) => {
     }
 
     const updateData = {
-      name, 
-      email, 
-      role, 
+      name,
+      email,
+      role,
       phone,
       isActive: status !== undefined ? (status === "Active") : (isActive !== undefined ? isActive : undefined),
       canManageTenants: canManageTenants !== undefined ? !!canManageTenants : permissions?.includes("tenants"),
-      canManageSubs:    canManageSubs    !== undefined ? !!canManageSubs    : permissions?.includes("subs"),
+      canManageSubs: canManageSubs !== undefined ? !!canManageSubs : permissions?.includes("subs"),
       canManageBanners: canManageBanners !== undefined ? !!canManageBanners : permissions?.includes("banners"),
       canManageAnnouncements: canManageAnnouncements !== undefined ? !!canManageAnnouncements : permissions?.includes("announcements"),
       canManageSupport: canManageSupport !== undefined ? !!canManageSupport : permissions?.includes("support"),
-      canManageCms:     canManageCms     !== undefined ? !!canManageCms     : permissions?.includes("cms"),
+      canManageCms: canManageCms !== undefined ? !!canManageCms : permissions?.includes("cms"),
     }
 
     if (password) updateData.password = await bcrypt.hash(password, 10)
