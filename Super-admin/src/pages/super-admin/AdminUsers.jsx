@@ -23,7 +23,7 @@ export function AdminUsers() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
-  
+
   const [addModalOpen, setAddModalOpen] = useState(false)
   const [editUser, setEditUser] = useState(null)
 
@@ -104,28 +104,28 @@ export function AdminUsers() {
       if (!formData.name || !formData.email) {
         return toast.error('Name and Email are required')
       }
-      
+
       setActionLoading(true)
-      const url = editUser 
-        ? `${API_URL}/admin/staff/${editUser.id}` 
+      const url = editUser
+        ? `${API_URL}/admin/staff/${editUser.id}`
         : `${API_URL}/admin/staff`
-      
+
       const method = editUser ? 'PUT' : 'POST'
-      
+
       const payload = { ...formData }
       if (!payload.password) delete payload.password
       if (payload.phone === '') delete payload.phone
-      
+
       const res = await fetch(url, {
         method,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
       })
 
-      
+
       const result = await res.json()
       if (result.success) {
         toast.success(editUser ? 'Admin updated' : 'Admin invited successfully')
@@ -144,7 +144,7 @@ export function AdminUsers() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to remove this admin?')) return
-    
+
     try {
       const res = await fetch(`${API_URL}/admin/staff/${id}`, {
         method: 'DELETE',
@@ -205,9 +205,9 @@ export function AdminUsers() {
       accessorKey: 'status',
       cell: ({ getValue }) => <Badge variant={getValue() === 'Active' ? 'active' : 'inactive'}>{getValue()}</Badge>,
     },
-    { 
-      id: 'lastLogin', 
-      header: t('table.lastLogin'), 
+    {
+      id: 'lastLogin',
+      header: t('table.lastLogin'),
       accessorKey: 'lastLoginAt',
       cell: ({ getValue }) => getValue() ? new Date(getValue()).toLocaleDateString() : 'Never'
     },
@@ -267,19 +267,19 @@ export function AdminUsers() {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label>{t('modal.fullName')}</Label>
-              <Input 
-                value={formData.name} 
-                onChange={e => setFormData({...formData, name: e.target.value})}
-                placeholder={t('modal.fullName')} 
+              <Input
+                value={formData.name}
+                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                placeholder={t('modal.fullName')}
               />
             </div>
             <div className="space-y-2">
               <Label>{t('modal.email')}</Label>
-              <Input 
-                value={formData.email} 
-                onChange={e => setFormData({...formData, email: e.target.value})}
-                type="email" 
-                placeholder={t('modal.email')} 
+              <Input
+                value={formData.email}
+                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                type="email"
+                placeholder={t('modal.email')}
               />
             </div>
 
@@ -288,7 +288,7 @@ export function AdminUsers() {
                 <Label>Role</Label>
                 <select
                   value={formData.role}
-                  onChange={e => setFormData({...formData, role: e.target.value})}
+                  onChange={e => setFormData({ ...formData, role: e.target.value })}
                   className={cn('h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring')}
                 >
                   {ROLES.map(r => (
@@ -300,22 +300,22 @@ export function AdminUsers() {
                 <Label>Status</Label>
                 <select
                   value={formData.status}
-                  onChange={e => setFormData({...formData, status: e.target.value})}
+                  onChange={e => setFormData({ ...formData, status: e.target.value })}
                   className={cn('h-10 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring')}
                 >
                   <option value="Active">Active</option>
-                  <option value="Inactive">Banned / Inactive</option>
+                  <option value="Inactive">Inactive</option>
                 </select>
               </div>
             </div>
 
             <div className="space-y-2">
               <Label>{t('modal.phone')}</Label>
-              <Input 
+              <Input
                 value={formData.phone}
-                onChange={e => setFormData({...formData, phone: e.target.value})}
-                type="tel" 
-                placeholder={t('modal.phone')} 
+                onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                type="tel"
+                placeholder={t('modal.phone')}
               />
             </div>
 
@@ -346,11 +346,11 @@ export function AdminUsers() {
             {!editUser && (
               <div className="space-y-2">
                 <Label>{t('modal.tempPassword')}</Label>
-                <Input 
+                <Input
                   value={formData.password}
-                  onChange={e => setFormData({...formData, password: e.target.value})}
-                  type="password" 
-                  placeholder={t('modal.tempPassword')} 
+                  onChange={e => setFormData({ ...formData, password: e.target.value })}
+                  type="password"
+                  placeholder={t('modal.tempPassword')}
                 />
               </div>
             )}
