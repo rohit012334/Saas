@@ -194,6 +194,10 @@ export const addAdminStaff = async (req, res, next) => {
       permissions // checkbox array from frontend
     } = req.body
 
+    if (!name || !email || !password || !phone) {
+      return res.status(400).json({ success: false, message: "name , email , password and phone are required" })
+    }
+
     const existingAdmin = await prisma.superAdmin.findUnique({ where: { email } })
     if (existingAdmin) return res.status(400).json({ success: false, message: "Admin with this email already exists" })
 
